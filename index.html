@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>雅緻東岸｜宜花三天兩夜鐵道漫遊</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
     <script>
         tailwind.config = {
             theme: {
@@ -18,14 +21,14 @@
                     },
                     colors: {
                         nordic: {
-                            bg: '#F9F8F6',      
-                            card: '#FFFFFF',    
-                            text: '#3A3F3D',    
-                            muted: '#8E9492',   
-                            accent1: '#8A9A92', 
-                            accent2: '#A2B0B5', 
-                            accent3: '#D2C8BA', 
-                            border: '#E8E6E1',  
+                            bg: '#F9F8F6',
+                            card: '#FFFFFF',
+                            text: '#3A3F3D',
+                            muted: '#8E9492',
+                            accent1: '#8A9A92',
+                            accent2: '#A2B0B5',
+                            accent3: '#D2C8BA',
+                            border: '#E8E6E1',
                         }
                     }
                 }
@@ -38,25 +41,30 @@
             color: #3A3F3D;
             scroll-behavior: smooth;
         }
+
         .hero-bg {
             background-image: linear-gradient(to bottom, rgba(249, 248, 246, 0.4), rgba(249, 248, 246, 1)), url('https://images.unsplash.com/photo-1549652250-84dc5b1be2f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80');
             background-size: cover;
             background-position: center;
         }
-        
+
         .timeline-container {
             position: relative;
             padding-left: 2rem;
             border-left: 1px solid #D2C8BA;
             margin-left: 1rem;
         }
+
         @media (min-width: 768px) {
-            .timeline-container { margin-left: 0; }
+            .timeline-container {
+                margin-left: 0;
+            }
         }
+
         .timeline-item::before {
             content: '';
             position: absolute;
-            left: -33px; 
+            left: -33px;
             top: 8px;
             width: 12px;
             height: 12px;
@@ -64,22 +72,37 @@
             background-color: #F9F8F6;
             border: 2px solid #8A9A92;
         }
-        
+
         .tab-active {
             border-bottom: 2px solid #8A9A92;
             color: #3A3F3D;
             font-weight: 600;
         }
+
         .fade-in {
             animation: fadeIn 0.5s ease-in-out forwards;
         }
+
         @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
 
         /* AI Chatbot Styles */
         #ai-chat-widget {
@@ -88,30 +111,65 @@
             opacity: 0;
             pointer-events: none;
         }
+
         #ai-chat-widget.active {
             transform: translateY(0) scale(1);
             opacity: 1;
             pointer-events: auto;
         }
-        .chat-bubble-user { background-color: #8A9A92; color: white; border-radius: 12px 12px 0 12px; }
-        .chat-bubble-ai { background-color: #F9F8F6; border: 1px solid #E8E6E1; color: #3A3F3D; border-radius: 12px 12px 12px 0; }
+
+        .chat-bubble-user {
+            background-color: #8A9A92;
+            color: white;
+            border-radius: 12px 12px 0 12px;
+        }
+
+        .chat-bubble-ai {
+            background-color: #F9F8F6;
+            border: 1px solid #E8E6E1;
+            color: #3A3F3D;
+            border-radius: 12px 12px 12px 0;
+        }
+
         .typing-indicator span {
             display: inline-block;
-            width: 6px; height: 6px;
+            width: 6px;
+            height: 6px;
             background-color: #A2B0B5;
             border-radius: 50%;
             animation: typing 1.4s infinite both;
             margin: 0 2px;
         }
-        .typing-indicator span:nth-child(1) { animation-delay: 0s; }
-        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
-        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        .typing-indicator span:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .typing-indicator span:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .typing-indicator span:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
         @keyframes typing {
-            0%, 80%, 100% { transform: scale(0); opacity: 0.5;}
-            40% { transform: scale(1); opacity: 1;}
+
+            0%,
+            80%,
+            100% {
+                transform: scale(0);
+                opacity: 0.5;
+            }
+
+            40% {
+                transform: scale(1);
+                opacity: 1;
+            }
         }
     </style>
 </head>
+
 <body class="antialiased">
 
     <nav class="bg-nordic-bg/90 backdrop-blur-sm fixed w-full z-50 border-b border-nordic-border">
@@ -133,11 +191,13 @@
 
     <header class="hero-bg h-[80vh] flex flex-col items-center justify-end pb-24 text-center px-4 relative">
         <span class="text-nordic-accent1 font-medium tracking-[0.3em] text-sm mb-4 uppercase">Nature & Railway</span>
-        <h1 class="text-4xl md:text-5xl font-serif font-medium mb-6 text-nordic-text leading-tight">宜花三天兩夜<br>大自然走讀計畫</h1>
+        <h1 class="text-4xl md:text-5xl font-serif font-medium mb-6 text-nordic-text leading-tight">宜花三天兩夜<br>大自然走讀計畫
+        </h1>
         <p class="text-nordic-muted font-light mb-10 max-w-xl mx-auto text-sm md:text-base leading-relaxed">
             從蘭陽平原的田野風光，到花東海岸的壯闊波瀾。<br>為好友同行設計的戶外微旅行，結合鐵道移動與在地短程接駁，免去開車疲勞，品味東海岸的純粹。
         </p>
-        <a href="#itinerary" class="text-nordic-text hover:text-nordic-accent1 transition duration-300 flex flex-col items-center gap-2">
+        <a href="#itinerary"
+            class="text-nordic-text hover:text-nordic-accent1 transition duration-300 flex flex-col items-center gap-2">
             <span class="text-xs tracking-widest font-medium">啟程</span>
             <i class="fa-solid fa-angle-down animate-bounce text-lg"></i>
         </a>
@@ -152,29 +212,37 @@
         <div class="relative w-full max-w-3xl mx-auto overflow-x-auto no-scrollbar pb-8">
             <div class="min-w-[600px] flex justify-between items-center relative pt-8 px-4">
                 <div class="absolute top-10 left-8 right-8 h-[1px] bg-nordic-border -z-10"></div>
-                
+
                 <div class="flex flex-col items-center relative z-10 group">
-                    <div class="w-4 h-4 rounded-full bg-nordic-bg border-[3px] border-nordic-accent2 mb-4 group-hover:scale-125 transition-transform duration-300"></div>
+                    <div
+                        class="w-4 h-4 rounded-full bg-nordic-bg border-[3px] border-nordic-accent2 mb-4 group-hover:scale-125 transition-transform duration-300">
+                    </div>
                     <span class="font-serif font-medium mb-1">台北</span>
                     <span class="text-[10px] text-nordic-muted tracking-wider">出發地</span>
                 </div>
 
                 <div class="flex flex-col items-center relative z-10 group">
-                    <div class="w-4 h-4 rounded-full bg-nordic-bg border-[3px] border-nordic-accent1 mb-4 group-hover:scale-125 transition-transform duration-300"></div>
+                    <div
+                        class="w-4 h-4 rounded-full bg-nordic-bg border-[3px] border-nordic-accent1 mb-4 group-hover:scale-125 transition-transform duration-300">
+                    </div>
                     <span class="font-serif font-medium mb-1">宜蘭礁溪/羅東</span>
                     <span class="text-[10px] text-nordic-muted tracking-wider">Day 1</span>
                     <div class="mt-2 text-xs text-nordic-accent1"><i class="fa-solid fa-tree"></i> 溫泉與農場</div>
                 </div>
 
                 <div class="flex flex-col items-center relative z-10 group">
-                    <div class="w-4 h-4 rounded-full bg-nordic-bg border-[3px] border-nordic-accent2 mb-4 group-hover:scale-125 transition-transform duration-300"></div>
+                    <div
+                        class="w-4 h-4 rounded-full bg-nordic-bg border-[3px] border-nordic-accent2 mb-4 group-hover:scale-125 transition-transform duration-300">
+                    </div>
                     <span class="font-serif font-medium mb-1">花蓮市區/七星潭</span>
                     <span class="text-[10px] text-nordic-muted tracking-wider">Day 2</span>
                     <div class="mt-2 text-xs text-nordic-accent2"><i class="fa-solid fa-train"></i> 鐵道與海灣</div>
                 </div>
 
                 <div class="flex flex-col items-center relative z-10 group">
-                    <div class="w-4 h-4 rounded-full bg-nordic-bg border-[3px] border-nordic-accent3 mb-4 group-hover:scale-125 transition-transform duration-300"></div>
+                    <div
+                        class="w-4 h-4 rounded-full bg-nordic-bg border-[3px] border-nordic-accent3 mb-4 group-hover:scale-125 transition-transform duration-300">
+                    </div>
                     <span class="font-serif font-medium mb-1">花蓮吉安/洄瀾灣</span>
                     <span class="text-[10px] text-nordic-muted tracking-wider">Day 3</span>
                     <div class="mt-2 text-xs text-nordic-accent3"><i class="fa-solid fa-camera-retro"></i> 藝文與尋味</div>
@@ -185,9 +253,15 @@
 
     <section id="itinerary" class="max-w-4xl mx-auto px-4 py-20">
         <div class="flex justify-center space-x-8 mb-12 border-b border-nordic-border">
-            <button id="tab-day1" onclick="showDay('day1')" class="pb-3 px-2 text-nordic-text font-serif text-lg tab-active transition-all focus:outline-none">Day 1. 蘭陽青旅</button>
-            <button id="tab-day2" onclick="showDay('day2')" class="pb-3 px-2 text-nordic-muted hover:text-nordic-text font-serif text-lg transition-all focus:outline-none">Day 2. 海灣尋幽</button>
-            <button id="tab-day3" onclick="showDay('day3')" class="pb-3 px-2 text-nordic-muted hover:text-nordic-text font-serif text-lg transition-all focus:outline-none">Day 3. 藝文賦歸</button>
+            <button id="tab-day1" onclick="showDay('day1')"
+                class="pb-3 px-2 text-nordic-text font-serif text-lg tab-active transition-all focus:outline-none">Day
+                1. 蘭陽青旅</button>
+            <button id="tab-day2" onclick="showDay('day2')"
+                class="pb-3 px-2 text-nordic-muted hover:text-nordic-text font-serif text-lg transition-all focus:outline-none">Day
+                2. 海灣尋幽</button>
+            <button id="tab-day3" onclick="showDay('day3')"
+                class="pb-3 px-2 text-nordic-muted hover:text-nordic-text font-serif text-lg transition-all focus:outline-none">Day
+                3. 藝文賦歸</button>
         </div>
 
         <div id="day1" class="day-content fade-in">
@@ -195,16 +269,21 @@
                 <h3 class="text-xl font-serif mb-2">綠意與農場的漫步</h3>
                 <p class="text-sm text-nordic-muted">礁溪 ➔ 鐵道 ➔ 羅東 ➔ 計程車接駁 ➔ 三星</p>
             </div>
-            
+
             <div class="timeline-container">
                 <div class="timeline-item pb-10">
                     <div class="text-xs text-nordic-accent1 font-medium tracking-widest mb-1">12:30 - 14:00</div>
                     <h4 class="text-lg font-serif mb-2">礁溪平價美食尋寶</h4>
                     <div class="bg-white p-5 rounded-xl border border-nordic-border shadow-sm">
-                        <p class="text-sm text-nordic-muted leading-relaxed mb-3">下山回到礁溪市區用餐。可以選擇在地知名的排隊小吃，或是有質感的平價文青麵館。</p>
+                        <p class="text-sm text-nordic-muted leading-relaxed mb-3">下山回到礁溪市區用餐。可以選擇在地知名的排隊小吃，或是有質感的平價文青麵館。
+                        </p>
                         <ul class="text-sm text-nordic-text space-y-2 mb-3">
-                            <li>• <span class="font-medium">小吃派：</span> <a href="https://maps.google.com/?cid=11398737450042948607" target="_blank" class="text-nordic-accent1 hover:underline">柯氏蔥油餅</a> + 吳記花生捲冰淇淋。</li>
-                            <li>• <span class="font-medium">餐廳派：</span> <a href="https://maps.google.com/?cid=14985965730394188277" target="_blank" class="text-nordic-accent1 hover:underline">弎蒔手作料理</a> (平價美味的台式定食與私房菜)。</li>
+                            <li>• <span class="font-medium">小吃派：</span> <a
+                                    href="https://maps.google.com/?cid=11398737450042948607" target="_blank"
+                                    class="text-nordic-accent1 hover:underline">柯氏蔥油餅</a> + 吳記花生捲冰淇淋。</li>
+                            <li>• <span class="font-medium">餐廳派：</span> <a
+                                    href="https://maps.google.com/?cid=14985965730394188277" target="_blank"
+                                    class="text-nordic-accent1 hover:underline">弎蒔手作料理</a> (平價美味的台式定食與私房菜)。</li>
                         </ul>
                     </div>
                 </div>
@@ -215,8 +294,10 @@
                     <div class="bg-white p-5 rounded-xl border border-nordic-border shadow-sm">
                         <p class="text-sm text-nordic-muted leading-relaxed mb-2">回到市區品嚐網路上評價極高的排隊美食：</p>
                         <ul class="text-sm text-nordic-text space-y-1">
-                            <li>• <a href="https://maps.google.com/?cid=10776459960078195535" target="_blank" class="text-nordic-accent2 hover:underline">欣欣麵館</a>：號稱「不是麵店的麵店」，其實是超人氣的平價海鮮熱炒。</li>
-                            <li>• <a href="https://maps.google.com/?cid=14766748184550707192" target="_blank" class="text-nordic-accent2 hover:underline">液香扁食</a>：花蓮最具代表性的傳統小吃。</li>
+                            <li>• <a href="https://maps.google.com/?cid=10776459960078195535" target="_blank"
+                                    class="text-nordic-accent2 hover:underline">欣欣麵館</a>：號稱「不是麵店的麵店」，其實是超人氣的平價海鮮熱炒。</li>
+                            <li>• <a href="https://maps.google.com/?cid=14766748184550707192" target="_blank"
+                                    class="text-nordic-accent2 hover:underline">液香扁食</a>：花蓮最具代表性的傳統小吃。</li>
                         </ul>
                     </div>
                 </div>
@@ -225,7 +306,8 @@
                     <div class="text-xs text-nordic-accent2 font-medium tracking-widest mb-1">14:30 - 17:00</div>
                     <h4 class="text-lg font-serif mb-2">七星潭風景區踏浪</h4>
                     <div class="bg-white p-5 rounded-xl border border-nordic-border shadow-sm">
-                        <p class="text-sm text-nordic-muted leading-relaxed mb-3">自市區搭乘「台灣好行-太魯閣線」或計程車前往美麗的月牙灣——七星潭。坐在礫石灘上聽海浪滾動石頭的療癒聲音，度過放鬆的午後。</p>
+                        <p class="text-sm text-nordic-muted leading-relaxed mb-3">
+                            自市區搭乘「台灣好行-太魯閣線」或計程車前往美麗的月牙灣——七星潭。坐在礫石灘上聽海浪滾動石頭的療癒聲音，度過放鬆的午後。</p>
                         <div class="text-xs bg-nordic-bg px-3 py-2 rounded-lg inline-flex text-nordic-text">
                             <i class="fa-solid fa-cloud-rain mr-2 text-nordic-muted"></i> 雨天備案：改往花蓮文化創意產業園區看展覽
                         </div>
@@ -238,7 +320,9 @@
                     <div class="bg-white p-5 rounded-xl border border-nordic-border shadow-sm">
                         <p class="text-sm text-nordic-muted leading-relaxed mb-3">晚上安排適合好友聚餐的餐廳，享受放鬆的夜晚。</p>
                         <ul class="text-sm text-nordic-text space-y-2 mb-3">
-                            <li>• <a href="https://maps.google.com/?cid=8775208986188984978" target="_blank" class="text-nordic-accent2 hover:underline">老時光燒肉酒肴</a>：花蓮人氣第一的居酒屋，氣氛超棒！（強烈建議提前訂位）</li>
+                            <li>• <a href="https://maps.google.com/?cid=8775208986188984978" target="_blank"
+                                    class="text-nordic-accent2 hover:underline">老時光燒肉酒肴</a>：花蓮人氣第一的居酒屋，氣氛超棒！（強烈建議提前訂位）
+                            </li>
                         </ul>
                         <p class="text-xs text-nordic-muted"><i class="fa-solid fa-bed mr-1"></i> 入住花蓮市區平價設計旅宿。</p>
                     </div>
@@ -251,13 +335,14 @@
                 <h3 class="text-xl font-serif mb-2">吉安禪意與特色建築</h3>
                 <p class="text-sm text-nordic-muted">花蓮市區 ➔ 吉安慶修院 ➔ 洄瀾灣 ➔ 伴手禮 ➔ 賦歸</p>
             </div>
-            
+
             <div class="timeline-container">
                 <div class="timeline-item pb-10">
                     <div class="text-xs text-nordic-accent3 font-medium tracking-widest mb-1">09:30 - 11:30</div>
                     <h4 class="text-lg font-serif mb-2">吉安慶修院</h4>
                     <div class="bg-white p-5 rounded-xl border border-nordic-border shadow-sm">
-                        <p class="text-sm text-nordic-muted leading-relaxed mb-3">早上從市區搭乘計程車前往吉安鄉（約15-20分鐘）。這裡是花蓮保存最完整的日式寺院，擁有靜謐的枯山水庭園與八十八尊石佛，體驗秒飛京都的雅緻氛圍。</p>
+                        <p class="text-sm text-nordic-muted leading-relaxed mb-3">
+                            早上從市區搭乘計程車前往吉安鄉（約15-20分鐘）。這裡是花蓮保存最完整的日式寺院，擁有靜謐的枯山水庭園與八十八尊石佛，體驗秒飛京都的雅緻氛圍。</p>
                     </div>
                 </div>
 
@@ -265,7 +350,8 @@
                     <div class="text-xs text-nordic-accent3 font-medium tracking-widest mb-1">12:00 - 13:30</div>
                     <h4 class="text-lg font-serif mb-2">星巴克洄瀾門市與午餐</h4>
                     <div class="bg-white p-5 rounded-xl border border-nordic-border shadow-sm">
-                        <p class="text-sm text-nordic-muted leading-relaxed mb-3">順路前往亞洲首間以「貨櫃」打造的星巴克，由知名建築師隈研吾設計。純白交錯的貨櫃空間是絕佳的拍照點。午餐可於一旁的新天堂樂園內享用，或是回到吉安市區品嚐小吃。</p>
+                        <p class="text-sm text-nordic-muted leading-relaxed mb-3">
+                            順路前往亞洲首間以「貨櫃」打造的星巴克，由知名建築師隈研吾設計。純白交錯的貨櫃空間是絕佳的拍照點。午餐可於一旁的新天堂樂園內享用，或是回到吉安市區品嚐小吃。</p>
                     </div>
                 </div>
 
@@ -273,7 +359,8 @@
                     <div class="text-xs text-nordic-accent3 font-medium tracking-widest mb-1">14:00 - 15:30</div>
                     <h4 class="text-lg font-serif mb-2">伴手禮採買時光</h4>
                     <div class="bg-white p-5 rounded-xl border border-nordic-border shadow-sm">
-                        <p class="text-sm text-nordic-muted leading-relaxed">返回花蓮市區的中華路或中山路商圈。必買清單包含：曾記麻糬、弘宇蛋糕（芋泥千層）、奶油酥條，或具特色的百年老店名產。</p>
+                        <p class="text-sm text-nordic-muted leading-relaxed">
+                            返回花蓮市區的中華路或中山路商圈。必買清單包含：曾記麻糬、弘宇蛋糕（芋泥千層）、奶油酥條，或具特色的百年老店名產。</p>
                     </div>
                 </div>
 
@@ -281,7 +368,8 @@
                     <div class="text-xs text-nordic-accent3 font-medium tracking-widest mb-1">16:00</div>
                     <h4 class="text-lg font-serif mb-2">花蓮車站，滿載賦歸</h4>
                     <div class="bg-white p-5 rounded-xl border border-nordic-border shadow-sm">
-                        <p class="text-sm text-nordic-muted leading-relaxed">帶著滿滿的回憶與伴手禮，前往花蓮火車站搭乘列車返回溫暖的家，結束這趟美好的東岸放鬆之旅。</p>
+                        <p class="text-sm text-nordic-muted leading-relaxed">
+                            帶著滿滿的回憶與伴手禮，前往花蓮火車站搭乘列車返回溫暖的家，結束這趟美好的東岸放鬆之旅。</p>
                     </div>
                 </div>
             </div>
@@ -298,18 +386,25 @@
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <!-- 住宿清單 -->
                 <div class="border border-nordic-border rounded-2xl p-6 bg-nordic-bg/50">
-                    <h3 class="font-serif text-lg mb-4 flex items-center"><i class="fa-solid fa-bed text-nordic-accent1 mr-2"></i> 平價質感旅宿推薦</h3>
+                    <h3 class="font-serif text-lg mb-4 flex items-center"><i
+                            class="fa-solid fa-bed text-nordic-accent1 mr-2"></i> 平價質感旅宿推薦</h3>
                     <div class="space-y-4">
-                        <a href="https://maps.google.com/?cid=465368447026004904" target="_blank" class="block p-4 bg-white rounded-xl hover:shadow-md transition-shadow group">
-                            <h4 class="font-medium text-nordic-text group-hover:text-nordic-accent1 transition-colors">靈感青年旅舍 (羅東)</h4>
+                        <a href="https://maps.google.com/?cid=465368447026004904" target="_blank"
+                            class="block p-4 bg-white rounded-xl hover:shadow-md transition-shadow group">
+                            <h4 class="font-medium text-nordic-text group-hover:text-nordic-accent1 transition-colors">
+                                靈感青年旅舍 (羅東)</h4>
                             <p class="text-xs text-nordic-muted mt-1">隱身市區的清新設計旅宿，提供舒適的多人房型，CP值極高。</p>
                         </a>
-                        <a href="https://maps.google.com/?cid=415246593037139912" target="_blank" class="block p-4 bg-white rounded-xl hover:shadow-md transition-shadow group">
-                            <h4 class="font-medium text-nordic-text group-hover:text-nordic-accent1 transition-colors">洄瀾窩青年旅舍 (花蓮)</h4>
+                        <a href="https://maps.google.com/?cid=415246593037139912" target="_blank"
+                            class="block p-4 bg-white rounded-xl hover:shadow-md transition-shadow group">
+                            <h4 class="font-medium text-nordic-text group-hover:text-nordic-accent1 transition-colors">
+                                洄瀾窩青年旅舍 (花蓮)</h4>
                             <p class="text-xs text-nordic-muted mt-1">位於花蓮車站正前方，工業風設計，生活機能滿分。</p>
                         </a>
-                        <a href="https://maps.google.com/?cid=3604607866170540012" target="_blank" class="block p-4 bg-white rounded-xl hover:shadow-md transition-shadow group">
-                            <h4 class="font-medium text-nordic-text group-hover:text-nordic-accent1 transition-colors">承億文旅 花蓮山知道 (花蓮)</h4>
+                        <a href="https://maps.google.com/?cid=3604607866170540012" target="_blank"
+                            class="block p-4 bg-white rounded-xl hover:shadow-md transition-shadow group">
+                            <h4 class="font-medium text-nordic-text group-hover:text-nordic-accent1 transition-colors">
+                                承億文旅 花蓮山知道 (花蓮)</h4>
                             <p class="text-xs text-nordic-muted mt-1">結合攀岩與藝術元素的文創旅館，空間寬敞舒適。</p>
                         </a>
                     </div>
@@ -317,18 +412,25 @@
 
                 <!-- 美食清單 -->
                 <div class="border border-nordic-border rounded-2xl p-6 bg-nordic-bg/50">
-                    <h3 class="font-serif text-lg mb-4 flex items-center"><i class="fa-solid fa-utensils text-nordic-accent2 mr-2"></i> 沿途必吃美食</h3>
+                    <h3 class="font-serif text-lg mb-4 flex items-center"><i
+                            class="fa-solid fa-utensils text-nordic-accent2 mr-2"></i> 沿途必吃美食</h3>
                     <div class="space-y-4">
-                        <a href="https://maps.google.com/?cid=14985965730394188277" target="_blank" class="block p-4 bg-white rounded-xl hover:shadow-md transition-shadow group">
-                            <h4 class="font-medium text-nordic-text group-hover:text-nordic-accent2 transition-colors">弎蒔手作料理 (礁溪)</h4>
+                        <a href="https://maps.google.com/?cid=14985965730394188277" target="_blank"
+                            class="block p-4 bg-white rounded-xl hover:shadow-md transition-shadow group">
+                            <h4 class="font-medium text-nordic-text group-hover:text-nordic-accent2 transition-colors">
+                                弎蒔手作料理 (礁溪)</h4>
                             <p class="text-xs text-nordic-muted mt-1">隱藏版的平價私廚台菜，精緻定食讓午餐也能很有儀式感。</p>
                         </a>
-                        <a href="https://maps.google.com/?cid=8775208986188984978" target="_blank" class="block p-4 bg-white rounded-xl hover:shadow-md transition-shadow group">
-                            <h4 class="font-medium text-nordic-text group-hover:text-nordic-accent2 transition-colors">老時光燒肉酒肴 (花蓮)</h4>
+                        <a href="https://maps.google.com/?cid=8775208986188984978" target="_blank"
+                            class="block p-4 bg-white rounded-xl hover:shadow-md transition-shadow group">
+                            <h4 class="font-medium text-nordic-text group-hover:text-nordic-accent2 transition-colors">
+                                老時光燒肉酒肴 (花蓮)</h4>
                             <p class="text-xs text-nordic-muted mt-1">花蓮氣氛最棒的居酒屋，串燒與特調飲品是好友聚會首選。</p>
                         </a>
-                        <a href="https://maps.google.com/?cid=5611042549380387909" target="_blank" class="block p-4 bg-white rounded-xl hover:shadow-md transition-shadow group">
-                            <h4 class="font-medium text-nordic-text group-hover:text-nordic-accent2 transition-colors">萬寶家食堂 (花蓮)</h4>
+                        <a href="https://maps.google.com/?cid=5611042549380387909" target="_blank"
+                            class="block p-4 bg-white rounded-xl hover:shadow-md transition-shadow group">
+                            <h4 class="font-medium text-nordic-text group-hover:text-nordic-accent2 transition-colors">
+                                萬寶家食堂 (花蓮)</h4>
                             <p class="text-xs text-nordic-muted mt-1">文青復古風的台式餐館，招牌梅干扣肉飯平價又銷魂。</p>
                         </a>
                     </div>
@@ -344,28 +446,51 @@
         </div>
         <div class="flex flex-col lg:flex-row gap-8">
             <div class="w-full lg:w-1/3 flex flex-col space-y-4">
-                <a href="https://www.google.com/maps/dir/礁溪火車站/林美石磐步道/弎蒔手作料理/張美阿嬤農場/羅東林業文化園區/羅東夜市" target="_blank" rel="noopener noreferrer" class="p-5 bg-white border border-nordic-border rounded-xl hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group">
-                    <h4 class="font-serif text-lg text-nordic-accent1 mb-2 group-hover:text-nordic-text transition-colors flex items-center"><i class="fa-solid fa-map-location-dot mr-2"></i>Day 1 宜蘭戶外行</h4>
-                    <p class="text-xs text-nordic-muted mb-2 leading-relaxed">礁溪車站 ➔ 林美石磐步道 ➔ 礁溪午餐 ➔ 張美阿嬤農場 ➔ 羅東林場 ➔ 夜市</p>
-                    <span class="text-xs text-nordic-accent1 font-medium group-hover:underline flex items-center mt-3">開啟手機導航 <i class="fa-solid fa-arrow-right-long ml-2"></i></span>
+                <a href="https://www.google.com/maps/dir/礁溪火車站/林美石磐步道/弎蒔手作料理/張美阿嬤農場/羅東林業文化園區/羅東夜市" target="_blank"
+                    rel="noopener noreferrer"
+                    class="p-5 bg-white border border-nordic-border rounded-xl hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group">
+                    <h4
+                        class="font-serif text-lg text-nordic-accent1 mb-2 group-hover:text-nordic-text transition-colors flex items-center">
+                        <i class="fa-solid fa-map-location-dot mr-2"></i>Day 1 宜蘭戶外行</h4>
+                    <p class="text-xs text-nordic-muted mb-2 leading-relaxed">礁溪車站 ➔ 林美石磐步道 ➔ 礁溪午餐 ➔ 張美阿嬤農場 ➔ 羅東林場 ➔ 夜市
+                    </p>
+                    <span
+                        class="text-xs text-nordic-accent1 font-medium group-hover:underline flex items-center mt-3">開啟手機導航
+                        <i class="fa-solid fa-arrow-right-long ml-2"></i></span>
                 </a>
-                
-                <a href="https://www.google.com/maps/dir/花蓮火車站/松園別館/欣欣麵館/七星潭風景區/老時光燒肉酒肴" target="_blank" rel="noopener noreferrer" class="p-5 bg-white border border-nordic-border rounded-xl hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group">
-                    <h4 class="font-serif text-lg text-nordic-accent2 mb-2 group-hover:text-nordic-text transition-colors flex items-center"><i class="fa-solid fa-route mr-2"></i>Day 2 海灣尋幽</h4>
+
+                <a href="https://www.google.com/maps/dir/花蓮火車站/松園別館/欣欣麵館/七星潭風景區/老時光燒肉酒肴" target="_blank"
+                    rel="noopener noreferrer"
+                    class="p-5 bg-white border border-nordic-border rounded-xl hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group">
+                    <h4
+                        class="font-serif text-lg text-nordic-accent2 mb-2 group-hover:text-nordic-text transition-colors flex items-center">
+                        <i class="fa-solid fa-route mr-2"></i>Day 2 海灣尋幽</h4>
                     <p class="text-xs text-nordic-muted mb-2 leading-relaxed">花蓮車站 ➔ 松園別館 ➔ 市區午餐 ➔ 七星潭 ➔ 市區晚餐</p>
-                    <span class="text-xs text-nordic-accent2 font-medium group-hover:underline flex items-center mt-3">開啟手機導航 <i class="fa-solid fa-arrow-right-long ml-2"></i></span>
+                    <span
+                        class="text-xs text-nordic-accent2 font-medium group-hover:underline flex items-center mt-3">開啟手機導航
+                        <i class="fa-solid fa-arrow-right-long ml-2"></i></span>
                 </a>
-                
-                <a href="https://www.google.com/maps/dir/花蓮火車站/吉安慶修院/星巴克(洄瀾門市)/花蓮火車站" target="_blank" rel="noopener noreferrer" class="p-5 bg-white border border-nordic-border rounded-xl hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group">
-                    <h4 class="font-serif text-lg text-nordic-accent3 mb-2 group-hover:text-nordic-text transition-colors flex items-center"><i class="fa-solid fa-water mr-2"></i>Day 3 藝文賦歸</h4>
+
+                <a href="https://www.google.com/maps/dir/花蓮火車站/吉安慶修院/星巴克(洄瀾門市)/花蓮火車站" target="_blank"
+                    rel="noopener noreferrer"
+                    class="p-5 bg-white border border-nordic-border rounded-xl hover:shadow-[0_8px_30px_rgb(0,0,0,0.08)] transition-all group">
+                    <h4
+                        class="font-serif text-lg text-nordic-accent3 mb-2 group-hover:text-nordic-text transition-colors flex items-center">
+                        <i class="fa-solid fa-water mr-2"></i>Day 3 藝文賦歸</h4>
                     <p class="text-xs text-nordic-muted mb-2 leading-relaxed">花蓮市區 ➔ 吉安慶修院 ➔ 貨櫃星巴克 ➔ 市區伴手禮 ➔ 花蓮車站</p>
-                    <span class="text-xs text-nordic-accent3 font-medium group-hover:underline flex items-center mt-3">開啟手機導航 <i class="fa-solid fa-arrow-right-long ml-2"></i></span>
+                    <span
+                        class="text-xs text-nordic-accent3 font-medium group-hover:underline flex items-center mt-3">開啟手機導航
+                        <i class="fa-solid fa-arrow-right-long ml-2"></i></span>
                 </a>
             </div>
-            
-            <div class="w-full lg:w-2/3 h-[450px] rounded-xl overflow-hidden border border-nordic-border shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] relative bg-nordic-bg">
+
+            <div
+                class="w-full lg:w-2/3 h-[450px] rounded-xl overflow-hidden border border-nordic-border shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] relative bg-nordic-bg">
                 <!-- 更新為更穩定的 Google Maps iframe 語法 -->
-                <iframe src="https://maps.google.com/maps?q=Yilan,Hualien&t=&z=9&ie=UTF8&iwloc=&output=embed" width="100%" height="100%" style="border:0; filter: contrast(1.02) saturate(0.85);" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="absolute inset-0"></iframe>
+                <iframe src="https://maps.google.com/maps?q=Yilan,Hualien&t=&z=9&ie=UTF8&iwloc=&output=embed"
+                    width="100%" height="100%" style="border:0; filter: contrast(1.02) saturate(0.85);"
+                    allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+                    class="absolute inset-0"></iframe>
             </div>
         </div>
     </section>
@@ -378,11 +503,13 @@
         </div>
     </footer>
 
-    <button id="ai-chat-toggle" class="fixed bottom-6 right-6 w-14 h-14 bg-nordic-accent1 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-opacity-90 hover:scale-105 transition-all z-40 focus:outline-none flex-col">
+    <button id="ai-chat-toggle"
+        class="fixed bottom-6 right-6 w-14 h-14 bg-nordic-accent1 text-white rounded-full shadow-lg flex items-center justify-center hover:bg-opacity-90 hover:scale-105 transition-all z-40 focus:outline-none flex-col">
         <i class="fa-solid fa-sparkles text-xl"></i>
     </button>
 
-    <div id="ai-chat-widget" class="fixed bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-96 bg-white rounded-2xl shadow-2xl border border-nordic-border z-50 flex flex-col overflow-hidden h-[500px] max-h-[70vh]">
+    <div id="ai-chat-widget"
+        class="fixed bottom-24 right-4 sm:right-6 w-[calc(100vw-2rem)] sm:w-96 bg-white rounded-2xl shadow-2xl border border-nordic-border z-50 flex flex-col overflow-hidden h-[500px] max-h-[70vh]">
         <div class="bg-nordic-bg px-4 py-3 border-b border-nordic-border flex justify-between items-center">
             <div class="flex items-center gap-2">
                 <div class="w-8 h-8 rounded-full bg-white border border-nordic-border flex items-center justify-center">
@@ -390,14 +517,16 @@
                 </div>
                 <div>
                     <div class="font-serif font-medium text-nordic-text text-sm">東岸戶外嚮導 AI</div>
-                    <div class="text-[10px] text-nordic-accent1 flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-nordic-accent1 inline-block"></span> 上線中</div>
+                    <div class="text-[10px] text-nordic-accent1 flex items-center gap-1"><span
+                            class="w-1.5 h-1.5 rounded-full bg-nordic-accent1 inline-block"></span> 上線中</div>
                 </div>
             </div>
-            <button id="ai-chat-close" class="text-nordic-muted hover:text-nordic-text focus:outline-none transition-colors">
+            <button id="ai-chat-close"
+                class="text-nordic-muted hover:text-nordic-text focus:outline-none transition-colors">
                 <i class="fa-solid fa-chevron-down"></i>
             </button>
         </div>
-        
+
         <div id="ai-chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4 bg-white font-sans text-sm">
             <div class="flex justify-start">
                 <div class="chat-bubble-ai p-3 max-w-[85%] shadow-sm leading-relaxed">
@@ -412,8 +541,11 @@
         </div>
 
         <div class="p-3 border-t border-nordic-border bg-nordic-bg flex gap-2 items-end">
-            <textarea id="ai-chat-input" rows="1" placeholder="輸入您的問題..." class="flex-1 px-3 py-2.5 rounded-lg border border-nordic-border focus:outline-none focus:border-nordic-accent1 text-sm bg-white resize-none no-scrollbar overflow-hidden" style="min-height: 42px; max-height: 100px;"></textarea>
-            <button id="ai-chat-send" class="bg-nordic-text text-white w-10 h-10 rounded-lg hover:bg-nordic-accent1 transition-colors focus:outline-none flex items-center justify-center flex-shrink-0">
+            <textarea id="ai-chat-input" rows="1" placeholder="輸入您的問題..."
+                class="flex-1 px-3 py-2.5 rounded-lg border border-nordic-border focus:outline-none focus:border-nordic-accent1 text-sm bg-white resize-none no-scrollbar overflow-hidden"
+                style="min-height: 42px; max-height: 100px;"></textarea>
+            <button id="ai-chat-send"
+                class="bg-nordic-text text-white w-10 h-10 rounded-lg hover:bg-nordic-accent1 transition-colors focus:outline-none flex items-center justify-center flex-shrink-0">
                 <i class="fa-solid fa-paper-plane text-sm translate-x-[-1px] translate-y-[1px]"></i>
             </button>
         </div>
@@ -425,7 +557,7 @@
                 el.classList.add('hidden');
                 el.classList.remove('fade-in');
             });
-            
+
             document.querySelectorAll('button[id^="tab-"]').forEach(el => {
                 el.classList.remove('tab-active');
                 el.classList.remove('text-nordic-text');
@@ -462,10 +594,10 @@ Day3: 花蓮吉安(慶修院)、洄瀾灣貨櫃星巴克 -> 伴手禮 -> 賦歸�
 
         let chatHistory = [];
 
-        chatInput.addEventListener('input', function() {
+        chatInput.addEventListener('input', function () {
             this.style.height = 'auto';
             this.style.height = (this.scrollHeight) + 'px';
-            if(this.value === '') this.style.height = '42px';
+            if (this.value === '') this.style.height = '42px';
         });
 
         chatToggleBtn.addEventListener('click', () => {
@@ -487,7 +619,7 @@ Day3: 花蓮吉安(慶修院)、洄瀾灣貨櫃星巴克 -> 伴手禮 -> 賦歸�
             appendMessage(text, 'user');
             chatInput.value = '';
             chatInput.style.height = '42px';
-            
+
             chatHistory.push({ role: "user", parts: [{ text: text }] });
 
             const typingId = appendTypingIndicator();
@@ -507,7 +639,7 @@ Day3: 花蓮吉安(慶修院)、洄瀾灣貨櫃星巴克 -> 伴手禮 -> 賦歸�
         };
 
         chatSendBtn.addEventListener('click', sendMessage);
-        
+
         chatInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey) {
                 e.preventDefault();
@@ -518,14 +650,14 @@ Day3: 花蓮吉安(慶修院)、洄瀾灣貨櫃星巴克 -> 伴手禮 -> 賦歸�
         function appendMessage(text, sender) {
             const msgDiv = document.createElement('div');
             msgDiv.className = `flex ${sender === 'user' ? 'justify-end' : 'justify-start'}`;
-            
+
             const bubble = document.createElement('div');
             bubble.className = `p-3 max-w-[85%] shadow-sm text-sm leading-relaxed ${sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-ai'}`;
-            
+
             let formattedText = text.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
             formattedText = formattedText.replace(/\n/g, '<br>');
             bubble.innerHTML = formattedText;
-            
+
             msgDiv.appendChild(bubble);
             chatMessages.appendChild(msgDiv);
         }
@@ -557,9 +689,9 @@ Day3: 花蓮吉安(慶修院)、洄瀾灣貨櫃星巴克 -> 伴手禮 -> 賦歸�
         }
 
         async function callGeminiAPI(history, attempt = 1) {
-            const apiKey = ""; 
+            const apiKey = "";
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
-            
+
             const payload = {
                 contents: history,
                 systemInstruction: {
@@ -588,8 +720,8 @@ Day3: 花蓮吉安(慶修院)、洄瀾灣貨櫃星巴克 -> 伴手禮 -> 賦歸�
             }
 
             const result = await response.json();
-            
-            if (result.candidates && result.candidates.length > 0 && 
+
+            if (result.candidates && result.candidates.length > 0 &&
                 result.candidates[0].content && result.candidates[0].content.parts) {
                 return result.candidates[0].content.parts[0].text;
             } else {
@@ -598,4 +730,5 @@ Day3: 花蓮吉安(慶修院)、洄瀾灣貨櫃星巴克 -> 伴手禮 -> 賦歸�
         }
     </script>
 </body>
+
 </html>
