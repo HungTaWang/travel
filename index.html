@@ -39,6 +39,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Noto+Serif+TC:wght@400;500;600;700&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
@@ -103,10 +104,11 @@
         </div>
     </div>
 
-    <!-- 1) 全站目錄（地區 & 行程清單） 2) AI 對話 3) 路由與渲染（會自動載入 trips/*.js） -->
-    <script src="assets/js/catalog.js"></script>
-    <script src="assets/js/chat.js"></script>
-    <script src="assets/js/app.js"></script>
+    <!-- 1) 地圖核心 (Leaflet) 2) 全站目錄 3) AI 對話 4) 路由與渲染 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <script src="assets/js/catalog.js?v=2.4"></script>
+    <script src="assets/js/chat.js?v=2.4"></script>
+    <script src="assets/js/app.js?v=2.4"></script>
 </body>
 
 </html>

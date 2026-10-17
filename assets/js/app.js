@@ -20,12 +20,14 @@
 
     const maps = {
         embed(stops) {
-            const [start, ...rest] = stops.map(encodeURIComponent);
+            const cleanStops = (stops || []).map((s) => (typeof s === 'object' ? s.name : s));
+            const [start, ...rest] = cleanStops.map(encodeURIComponent);
             const daddr = rest.length ? `&daddr=${rest.join('+to:')}` : '';
             return `https://maps.google.com/maps?saddr=${start}${daddr}&output=embed`;
         },
         nav(stops) {
-            return 'https://www.google.com/maps/dir/' + stops.map(encodeURIComponent).join('/');
+            const cleanStops = (stops || []).map((s) => (typeof s === 'object' ? s.name : s));
+            return 'https://www.google.com/maps/dir/' + cleanStops.map(encodeURIComponent).join('/');
         },
     };
 
@@ -35,7 +37,8 @@
     function loadScript(src) {
         return new Promise((resolve) => {
             const s = document.createElement('script');
-            s.src = src;
+            // 加入時間戳記避免瀏覽器快取舊的行程資料
+            s.src = `${src}${src.includes('?') ? '&' : '?'}v=${Date.now()}`;
             s.onload = resolve;
             s.onerror = () => {
                 console.warn('[TravelAtlas] 無法載入行程檔：', src);
@@ -261,12 +264,19 @@ ${list}
        Trip Page
        ============================================================ */
     function renderTrip(t) {
+        currentTrip = t;
         document.title = t.pageTitle || `${t.title}｜${A.site.name}`;
         renderNav(t);
 
         view.innerHTML = [heroTpl(t), routeTpl(t), itineraryTpl(t), curatedTpl(t), mapTpl(t)].join('');
 
         if (t.days?.length) showDay(t.days[0].id);
+
+        const isEmbedMode = (t.mapMode === 'google-embed') || (t.region === 'taiwan' && t.mapMode !== 'interactive');
+        const firstMapKey = t.mapOverview?.stops?.length ? 'overview' : (t.days?.find((d) => d.map?.stops?.length)?.id || null);
+        if (!isEmbedMode && firstMapKey) {
+            initTripMap(firstMapKey);
+        }
 
         if (window.TravelAtlasChat) {
             window.TravelAtlasChat.setContext({
@@ -421,8 +431,146 @@ ${list}
             </section>`;
     }
 
-    /* ---------- Map ---------- */
-    let currentMaps = {};
+    /* ---------- Interactive Map (Google Maps Tiles + Route Polyline) ---------- */
+    const AtlasGeoTable = {
+        // 台灣 宜花
+        '台北火車站': [25.0478, 121.5170],
+        '台北': [25.0478, 121.5170],
+        '礁溪火車站': [24.8290, 121.7744],
+        '礁溪': [24.8290, 121.7744],
+        '林美石磐步道': [24.8329, 121.7335],
+        '弎蒔手作料理': [24.8277, 121.7712],
+        '張美阿嬤農場': [24.6644, 121.6963],
+        '羅東林業文化園區': [24.6853, 121.7709],
+        '羅東火車站': [24.6766, 121.7718],
+        '羅東': [24.6766, 121.7718],
+        '羅東夜市': [24.6761, 121.7681],
+        '花蓮火車站': [23.9932, 121.6015],
+        '花蓮': [23.9932, 121.6015],
+        '七星柴魚博物館': [24.0152, 121.6315],
+        '七星潭風景區': [24.0289, 121.6306],
+        '七星潭': [24.0289, 121.6306],
+        '花蓮美崙海鮮': [23.9928, 121.6241],
+        '松園別館': [23.9822, 121.6143],
+        '將軍府1936園區': [23.9786, 121.6125],
+        '東大門夜市': [23.9744, 121.6111],
+        '吉安慶修院': [23.9733, 121.5645],
+        '蓮城蓮花園': [23.9576, 121.5518],
+        '蓮花城': [23.9576, 121.5518],
+        '蓮城蓮花池': [23.9576, 121.5518],
+        'City Lotus Garden': [23.9576, 121.5518],
+        'City Lotus Garden, No. 66號, Nanhua 5th St, Nanhua Village, Ji’an Township, Hualien County, 973': [23.9576, 121.5518],
+        '慶豐麵店': [23.9780, 121.5720],
+
+        // 韓國 釜山
+        '金海國際機場': [35.1795, 128.9382],
+        '金海機場': [35.1795, 128.9382],
+        '海雲台海水浴場': [35.1587, 129.1604],
+        '海雲台': [35.1587, 129.1604],
+        '新世界百貨 Centum City': [35.1689, 129.1296],
+        'Spa Land': [35.1689, 129.1296],
+        '海雲台藍線公園尾浦站': [35.1594, 129.1706],
+        '青沙浦站': [35.1614, 129.1915],
+        '青沙浦': [35.1614, 129.1915],
+        '釜山 X the SKY': [35.1598, 129.1685],
+        '海雲台傳統市場': [35.1610, 129.1612],
+        '松島海上纜車': [35.0760, 129.0195],
+        '岩南公園': [35.0617, 129.0202],
+        '南浦洞商圈': [35.0990, 129.0305],
+        '南浦洞': [35.0990, 129.0305],
+        '樂天百貨光復店': [35.0984, 129.0360],
+        'BIFF廣場': [35.0986, 129.0270],
+        '冬柏島 APEC世峰樓': [35.1527, 129.1517],
+        '冬柏島': [35.1527, 129.1517],
+        '錦繡河豚湯': [35.1615, 129.1633],
+        '廣安里海水浴場': [35.1532, 129.1186],
+        '廣安里': [35.1532, 129.1186],
+        '釜山水營灣遊艇競技場': [35.1601, 129.1418],
+        '水營灣遊艇競技場': [35.1601, 129.1418],
+        '西面地下街': [35.1578, 129.0592],
+        '西面': [35.1578, 129.0592],
+    };
+
+    // 韓國景點韓文官方名稱表（供 Naver Map 精準導航與地標對照）
+    const AtlasKoreaNames = {
+        '金海國際機場': '김해국제공항',
+        '金海機場': '김해국제공항',
+        '海雲台海水浴場': '해운대해수욕장',
+        '海雲台': '해운대해수욕장',
+        '新世界百貨 Centum City': '신세계백화점 센텀시티점',
+        'Spa Land': '스파랜드 센텀시티',
+        '東萊蔘雞湯': '동래삼계탕',
+        '海雲台藍線公園尾浦站': '해운대블루라인파크 미포정거장',
+        '青沙浦站': '해운대블루라인파크 청사포정거장',
+        '青沙浦': '청사포',
+        '秀敏家烤貝': '수민이네',
+        '釜山 X the SKY': '부산엑스더스카이',
+        '海雲台傳統市場': '해운대 전통시장',
+        '極東豬肉湯飯': '극동돼지국밥',
+        '松島海上纜車': '송도해상케이블카',
+        '岩南公園': '암남공원',
+        '南浦洞商圈': '남포동',
+        '南浦洞': '남포동',
+        '樂天百貨光復店': '롯데백화점 광복점',
+        'BIFF廣場': 'BIFF 광장',
+        '首爾蘿蔔塊雪濃湯': '서울깍두기 남포',
+        '冬柏島 APEC世峰樓': '누리마루 APEC하우스',
+        '冬柏島': '동백섬',
+        '錦繡河豚湯': '금수복국 해운대본점',
+        '廣安里海水浴場': '광안리해수욕장',
+        '廣安里': '광안리해수욕장',
+        '釜山水營灣遊艇競技場': '부산요트경기장',
+        '水營灣遊艇競技場': '부산요트경기장',
+        '西面地下街': '서면지하상가',
+        '西面': '서면',
+    };
+
+    function resolveCoords(stop) {
+        if (!stop) return null;
+        if (typeof stop === 'object') {
+            if (Array.isArray(stop.coords)) return stop.coords;
+            if (stop.lat && stop.lng) return [stop.lat, stop.lng];
+            stop = stop.name || '';
+        }
+        if (AtlasGeoTable[stop]) return AtlasGeoTable[stop];
+        for (const [name, coords] of Object.entries(AtlasGeoTable)) {
+            if (stop.includes(name) || name.includes(stop)) return coords;
+        }
+        return null;
+    }
+
+    function naverDirections(stops, mode = 'car') {
+        const list = Array.isArray(stops) ? stops : [stops];
+        const segments = list.map((stop) => {
+            const name = typeof stop === 'object' ? stop.name : stop;
+            const coords = resolveCoords(stop);
+            const kr = AtlasKoreaNames[name] || name;
+            if (coords) {
+                return `${coords[1]},${coords[0]},${encodeURIComponent(kr)}`;
+            }
+            return encodeURIComponent(kr);
+        });
+        if (segments.length === 0) return 'https://map.naver.com/p/directions';
+        if (segments.length === 1) {
+            return `https://map.naver.com/p/directions/-/${segments[0]}/-/${mode}`;
+        }
+        return `https://map.naver.com/p/directions/${segments.join('/')}/-/${mode}`;
+    }
+
+    let currentTrip = null;
+    let leafletMap = null;
+    let mapLayers = {
+        routeLayer: null,
+        markersLayer: null,
+    };
+    let currentMapEntries = {};
+
+    const colorHex = {
+        accent1: '#C68B7C',
+        accent2: '#8FA0A8',
+        accent3: '#D8C2AD',
+        accent4: '#9AA89B',
+    };
 
     function mapTpl(t) {
         const entries = [];
@@ -432,43 +580,235 @@ ${list}
         });
         if (!entries.length) return '';
 
-        currentMaps = Object.fromEntries(entries.map((e) => [e.key, maps.embed(e.stops)]));
+        currentMapEntries = Object.fromEntries(entries.map((e) => [e.key, e]));
+
+        const isEmbedMode = (t.mapMode === 'google-embed') || (t.region === 'taiwan' && t.mapMode !== 'interactive');
+        const isKorea = t.region === 'korea' || t.mapProvider === 'naver';
+        const firstEntry = entries[0];
+        const firstEmbedUrl = firstEntry.embedUrl || maps.embed(firstEntry.stops);
+        const firstNavUrl = isKorea
+            ? (firstEntry.naverUrl || naverDirections(firstEntry.stops, 'car'))
+            : (firstEntry.navUrl || maps.nav(firstEntry.stops));
+
+        const mainTitle = isEmbedMode ? 'Google Maps 實境路線預覽' : (isKorea ? 'Naver Map 實境導航路線' : 'Google Maps 實境導航');
+        const mainSubtitle = isKorea
+            ? '繁體中文地圖預覽標記，點擊可開啟 Naver Map 當地即時導航'
+            : '點擊左側路線卡片切換實境路線，或點擊地圖右上角開啟完整導航';
+        const openBtnLabel = isKorea ? '在 Naver Map 開啟導航' : '在 Google Maps 開啟完整導航';
+        const openBtnIcon = isKorea ? 'fa-solid fa-location-arrow text-emerald-600' : 'fa-brands fa-google text-nordic-accent1';
+        const badgeText = isKorea
+            ? 'Naver Map 導航 ＆ 繁體中文實境地圖'
+            : (isEmbedMode ? 'Google Maps 原生實境路線' : 'Google Maps 圖資 ＆ 實境路線圖');
 
         return `
             <section id="map-route" class="max-w-5xl mx-auto px-4 py-20 border-t border-nordic-border">
                 <div class="text-center mb-12">
-                    <h2 class="font-serif text-2xl md:text-3xl font-medium mb-3">Google Maps 實境導航</h2>
-                    <p class="text-nordic-muted text-sm font-light">點擊卡片查看各日路線，或點擊下方連結於手機開啟導航</p>
+                    <h2 class="font-serif text-2xl md:text-3xl font-medium mb-3">${mainTitle}</h2>
+                    <p class="text-nordic-muted text-sm font-light">${mainSubtitle}</p>
                 </div>
                 <div class="flex flex-col lg:flex-row gap-8">
                     <div class="w-full lg:w-1/3 flex flex-col space-y-4">
-                        ${entries.map((e, i) => `
+                        ${entries.map((e, i) => {
+                            const navUrl = isKorea
+                                ? (e.naverUrl || naverDirections(e.stops, 'car'))
+                                : (e.navUrl || maps.nav(e.stops));
+                            const navLabel = isKorea ? 'Naver 導航' : 'Google 導航';
+                            return `
                             <div role="button" tabindex="0" data-map="${esc(e.key)}" id="btn-map-${esc(e.key)}"
-                                class="map-card ${i === 0 ? 'is-active' : ''} p-5 bg-white border rounded-xl transition-all text-left group focus:outline-none">
+                                class="map-card ${i === 0 ? 'is-active' : ''} p-5 bg-white border rounded-xl transition-all text-left group focus:outline-none cursor-pointer">
                                 <h4 class="font-serif text-lg text-nordic-${esc(e.color)} mb-2 group-hover:text-nordic-text transition-colors flex items-center">
                                     <i class="fa-solid ${esc(e.icon || 'fa-map-location-dot')} mr-2"></i>${esc(e.title)}
                                 </h4>
                                 ${e.desc ? `<p class="text-xs text-nordic-muted leading-relaxed">${esc(e.desc)}</p>` : ''}
-                                <a href="${esc(maps.nav(e.stops))}" target="_blank" rel="noopener noreferrer"
-                                    class="text-xs text-nordic-${esc(e.color)} font-medium hover:underline inline-flex items-center mt-3">開啟手機導航
-                                    <i class="fa-solid fa-arrow-right-long ml-2"></i></a>
-                            </div>`).join('')}
+                                <div class="flex items-center justify-between mt-3 pt-2 border-t border-nordic-border/60">
+                                    <span class="text-[11px] text-nordic-muted">${(e.stops || []).length} 個站點</span>
+                                    <a href="${esc(navUrl)}" target="_blank" rel="noopener noreferrer" onclick="event.stopPropagation()"
+                                        class="text-xs text-nordic-${esc(e.color)} font-medium hover:underline inline-flex items-center">
+                                        ${navLabel} <i class="fa-solid fa-arrow-up-right-from-square ml-1 text-[10px]"></i>
+                                    </a>
+                                </div>
+                            </div>`;
+                        }).join('')}
                     </div>
-                    <div class="w-full lg:w-2/3 h-[450px] md:h-[600px] rounded-xl overflow-hidden border border-nordic-border shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] relative bg-nordic-bg">
-                        <iframe id="main-map-iframe" src="${esc(currentMaps[entries[0].key])}"
-                            width="100%" height="100%" style="border:0; filter: contrast(1.02) saturate(0.85);"
-                            allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
-                            class="absolute inset-0 transition-opacity duration-500"></iframe>
+                    <div class="w-full lg:w-2/3 h-[450px] md:h-[600px] rounded-2xl overflow-hidden border border-nordic-border shadow-[0_4px_20px_rgba(0,0,0,0.06)] relative bg-nordic-bg">
+                        ${isEmbedMode ? `
+                            <iframe id="gmaps-preview-frame"
+                                class="w-full h-full border-0 rounded-2xl"
+                                src="${esc(firstEmbedUrl)}"
+                                loading="lazy"
+                                allowfullscreen
+                                referrerpolicy="no-referrer-when-downgrade">
+                            </iframe>
+                        ` : `
+                            <div id="interactive-map" class="w-full h-full z-0"></div>
+                        `}
+                        <div class="absolute top-4 right-4 z-[400]">
+                            <a id="btn-open-gmaps" href="${esc(firstNavUrl)}" target="_blank" rel="noopener noreferrer"
+                               class="px-4 py-2 rounded-full bg-white/95 backdrop-blur text-nordic-text border border-nordic-border shadow-md text-xs font-medium hover:text-nordic-accent1 hover:border-nordic-accent1 transition-all flex items-center gap-2">
+                                <i class="${openBtnIcon}"></i>
+                                <span>${openBtnLabel}</span>
+                                <i class="fa-solid fa-arrow-up-right-from-square text-[10px] opacity-70"></i>
+                            </a>
+                        </div>
+                        <div class="absolute bottom-4 left-4 z-[400] px-3 py-1.5 rounded-lg bg-white/90 backdrop-blur border border-nordic-border text-[11px] text-nordic-muted shadow-sm flex items-center gap-2">
+                            <span class="w-2 h-2 rounded-full bg-nordic-accent1 animate-pulse"></span>
+                            <span>${badgeText}</span>
+                        </div>
                     </div>
                 </div>
             </section>`;
     }
 
+    function initTripMap(activeKey) {
+        const container = document.getElementById('interactive-map');
+        if (!container || typeof L === 'undefined') return;
+
+        if (leafletMap) {
+            try {
+                leafletMap.remove();
+            } catch (e) {
+                console.warn('Map cleanup:', e);
+            }
+            leafletMap = null;
+        }
+
+        leafletMap = L.map(container, {
+            zoomControl: false,
+            attributionControl: true,
+        });
+
+        L.control.zoom({ position: 'bottomright' }).addTo(leafletMap);
+
+        // Google Maps Standard Road Tiles with Traditional Chinese language (繁體中文圖資)
+        const googleRoads = L.tileLayer('https://mt1.google.com/vt/lyrs=m&hl=zh-TW&x={x}&y={y}&z={z}', {
+            maxZoom: 20,
+            attribution: '© Google Maps (繁體中文)',
+        });
+        googleRoads.addTo(leafletMap);
+
+        mapLayers.routeLayer = L.featureGroup().addTo(leafletMap);
+        mapLayers.markersLayer = L.featureGroup().addTo(leafletMap);
+
+        if (activeKey && currentMapEntries[activeKey]) {
+            renderRouteOnMap(activeKey);
+        }
+    }
+
+    function renderRouteOnMap(key) {
+        if (!leafletMap || !currentMapEntries[key]) return;
+        const entry = currentMapEntries[key];
+        const hex = colorHex[entry.color] || '#C68B7C';
+
+        mapLayers.routeLayer.clearLayers();
+        mapLayers.markersLayer.clearLayers();
+
+        const latlngs = [];
+        const stops = entry.stops || [];
+        const isKorea = currentTrip?.region === 'korea' || currentTrip?.mapProvider === 'naver';
+
+        stops.forEach((stop, index) => {
+            const stopName = typeof stop === 'object' ? stop.name : stop;
+            const coords = resolveCoords(stop);
+            if (!coords) return;
+
+            latlngs.push(coords);
+
+            const pinIcon = L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div class="route-pin" style="background-color: ${hex};">${index + 1}</div>`,
+                iconSize: [28, 28],
+                iconAnchor: [14, 14],
+                popupAnchor: [0, -14],
+            });
+
+            const marker = L.marker(coords, { icon: pinIcon });
+            const krName = AtlasKoreaNames[stopName] || '';
+            const searchUrl = isKorea
+                ? naverDirections([stopName], 'car')
+                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stopName)}`;
+            const providerName = isKorea ? 'Naver Map' : 'Google Maps';
+
+            const popupHtml = `
+                <div class="p-2 min-w-[170px]">
+                    <div class="text-[10px] tracking-wider text-nordic-muted uppercase">第 ${index + 1} 站</div>
+                    <div class="font-serif font-medium text-sm text-nordic-text mt-0.5">${esc(stopName)}</div>
+                    ${krName ? `<div class="text-[11px] text-nordic-muted mt-0.5 font-sans">${esc(krName)}</div>` : ''}
+                    <a href="${esc(searchUrl)}" target="_blank" rel="noopener noreferrer"
+                       class="mt-2 text-xs text-nordic-accent1 font-medium hover:underline inline-flex items-center gap-1">
+                        在 ${providerName} 開啟導航 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                    </a>
+                </div>
+            `;
+            marker.bindPopup(popupHtml);
+            mapLayers.markersLayer.addLayer(marker);
+        });
+
+        if (latlngs.length >= 2) {
+            L.polyline(latlngs, {
+                color: '#ffffff',
+                weight: 8,
+                opacity: 0.75,
+                smoothFactor: 1,
+                lineCap: 'round',
+                lineJoin: 'round',
+            }).addTo(mapLayers.routeLayer);
+
+            L.polyline(latlngs, {
+                color: hex,
+                weight: 4.5,
+                opacity: 0.95,
+                smoothFactor: 1,
+                lineCap: 'round',
+                lineJoin: 'round',
+            }).addTo(mapLayers.routeLayer);
+        }
+
+        if (latlngs.length > 0) {
+            const bounds = L.latLngBounds(latlngs);
+            leafletMap.fitBounds(bounds, {
+                padding: [45, 45],
+                maxZoom: 15,
+                animate: true,
+                duration: 0.8,
+            });
+        }
+
+        const btnOpenGmaps = document.getElementById('btn-open-gmaps');
+        if (btnOpenGmaps) {
+            const navUrl = isKorea
+                ? (entry.naverUrl || naverDirections(entry.stops, 'car'))
+                : (entry.navUrl || maps.nav(entry.stops.map((s) => (typeof s === 'object' ? s.name : s))));
+            btnOpenGmaps.href = navUrl;
+        }
+
+        setTimeout(() => leafletMap?.invalidateSize(), 150);
+    }
+
     function changeMap(key) {
-        const iframe = document.getElementById('main-map-iframe');
-        if (!iframe || !currentMaps[key]) return;
-        iframe.src = currentMaps[key];
+        const entry = currentMapEntries[key];
+        if (!entry) return;
         document.querySelectorAll('.map-card').forEach((el) => el.classList.toggle('is-active', el.dataset.map === key));
+
+        const isEmbedMode = (currentTrip?.mapMode === 'google-embed') || (currentTrip?.region === 'taiwan' && currentTrip?.mapMode !== 'interactive');
+        const isKorea = currentTrip?.region === 'korea' || currentTrip?.mapProvider === 'naver';
+        const navUrl = isKorea
+            ? (entry.naverUrl || naverDirections(entry.stops, 'car'))
+            : (entry.navUrl || maps.nav(entry.stops));
+        const embedUrl = entry.embedUrl || maps.embed(entry.stops);
+
+        const btnOpenGmaps = document.getElementById('btn-open-gmaps');
+        if (btnOpenGmaps) {
+            btnOpenGmaps.href = navUrl;
+        }
+
+        if (isEmbedMode) {
+            const frame = document.getElementById('gmaps-preview-frame');
+            if (frame && frame.src !== embedUrl) {
+                frame.src = embedUrl;
+            }
+        } else {
+            renderRouteOnMap(key);
+        }
     }
 
     function showDay(dayId) {

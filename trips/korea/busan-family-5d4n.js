@@ -6,6 +6,8 @@ TravelAtlas.registerTrip({
     id: 'busan-family-5d4n',
     region: 'korea',
     status: 'published',
+    mapMode: 'interactive', // 韓國地區因國土圖資法規無法直接計算 Google 導航，使用互動式地圖圖標標記與圖資瀏覽
+    mapProvider: 'naver', // 使用 Naver Map 作為主要導航連結與地標對照
 
     // ---- 卡片 / 頁面基本資訊 ----
     title: '釜山五天四夜海港漫旅',
@@ -65,7 +67,7 @@ TravelAtlas.registerTrip({
                     title: '百貨美饌街或溫潤滋補人蔘雞湯',
                     desc: '第一天晚餐挑選溫和暖胃的料理，品嚐慢火細燉、湯頭甘甜純厚的傳統人蔘雞湯。鮮嫩童子雞內包覆著人蔘、紅棗與軟糯米粥，香氣四溢、暖胃養生，為接下來的海港旅程注入充沛元氣。',
                     list: [
-                        { label: '人氣滋補', name: '東萊蔘雞湯 (동래삼계탕)', url: 'https://maps.google.com/?q=Dongnae+Samgyetang+Busan', note: '：在地知名老字號，雞肉軟嫩細緻、湯頭醇香甘甜。' },
+                        { label: '人氣滋補', name: '東萊蔘雞湯 (동래삼계탕)', url: 'https://map.naver.com/p/search/%EB%8F%99%EB%9E%98%EC%82%BC%EA%B3%84%ED%83%95', note: '：在地知名老字號，雞肉軟嫩細緻、湯頭醇香甘甜。' },
                     ],
                 },
             ],
@@ -74,6 +76,7 @@ TravelAtlas.registerTrip({
                 icon: 'fa-hot-tub-person',
                 desc: '金海國際機場 ➔ 海雲台海水浴場飯店 ➔ 新世界百貨 Centum City (Spa Land)',
                 stops: ['金海國際機場', '海雲台海水浴場', '新世界百貨 Centum City'],
+                naverUrl: 'https://map.naver.com/p/search/%EC%8A%A4%ED%8C%8C%EB%9E%9C%EB%93%9C%20%EC%84%BC%ED%85%80%EC%8B%9C%ED%8B%B0',
             },
         },
         {
@@ -89,6 +92,7 @@ TravelAtlas.registerTrip({
                     desc: '造訪釜山不可錯過的經典體驗。自尾浦站搭乘獨立彩色復古膠囊列車，沿著海岸高架鐵道平穩慢行前往青沙浦。車廂配備獨立空調與大面觀景窗，坐在座位上即可飽覽陽光下波光粼粼的太平洋與奇岩綠樹，享受毫無遮蔽的無敵海景。',
                     list: [
                         '💡 <strong>預約貼士：</strong>熱門時段建議提前 2~3 週於官網線上預訂車票，推薦選擇上午 10:00 左右「尾浦 往 青沙浦」方向，光線順光最適合留影。',
+                        { label: '出發車站', name: '海雲台藍線公園 尾浦站 (미포정거장)', url: 'https://map.naver.com/p/search/%ED%95%B4%EC%9A%B4%EB%8C%80%EB%B8%94%EB%A3%A8%EB%9D%BC%EC%9D%B8%ED%8C%8C%ED%81%AC%20%EB%AF%B8%ED%8F%AC%EC%A0%95%EA%B1%B0%EC%9E%A5', note: '：膠囊列車乘車點。' },
                     ],
                 },
                 {
@@ -96,21 +100,24 @@ TravelAtlas.registerTrip({
                     title: '青沙浦漁港午餐：熱海帶湯定食或現烤海味',
                     desc: '列車抵達青沙浦後，漫步至漁港旁的景觀餐館。品嚐當地人推崇的「鮑魚海帶湯定食」，以牛骨高湯熬透細嫩海帶與整顆飽滿鮑魚；亦可至指標性名店「秀敏家」品嚐炭火現烤扇貝，享受海港原汁原味的鮮甜。',
                     list: [
-                        { label: '在地推崇', name: '青沙浦海帶湯定食', url: 'https://maps.google.com/?q=Cheongsapo+Seaweed+Soup+Busan', note: '：熱騰騰的濃醇高湯，搭配豐富鮮美的海鮮定食小菜。' },
-                        { label: '炭烤海味', name: '秀敏家烤貝 (수민이네)', url: 'https://maps.google.com/?q=Suminine+Cheongsapo+Busan', note: '：青沙浦高人氣烤貝名店，窗外即是港灣海景。' },
+                        { label: '在地推崇', name: '青沙浦海帶湯定食 (청사포 미역국)', url: 'https://map.naver.com/p/search/%EC%B2%AD%EC%82%AC%ED%8F%AC%20%EB%AF%B8%EC%97%AD%EA%B5%AD', note: '：熱騰騰的濃醇高湯，搭配豐富鮮美的海鮮定食小菜。' },
+                        { label: '炭烤海味', name: '秀敏家烤貝 (수민이네)', url: 'https://map.naver.com/p/search/%EC%88%98%EB%AF%BC%EC%9D%B4%EB%84%A4', note: '：青沙浦高人氣烤貝名店，窗外即是港灣海景。' },
                     ],
                 },
                 {
                     time: '14:00 - 16:00',
                     title: '釜山 X the SKY 觀景台 ＆ 全球最高星巴克',
                     desc: '搭乘計程車返回海雲台 Landmark Tower，搭乘高速景觀電梯直達 100 樓觀景台，俯瞰整座海雲台新月形沙灘、冬柏島與遠方廣安大橋的壯麗全景。<br>隨後可至 99 樓的世界最高星巴克挑選靠窗沙發座，點杯手沖咖啡與甜點，在雲端視野中靜靜欣賞海浪波紋與城市天際線。',
+                    list: [
+                        { label: '景觀地標', name: '釜山 X the SKY 觀景台 (부산엑스더스카이)', url: 'https://map.naver.com/p/search/%EB%B6%80%EC%82%B0%EC%97%91%EC%8A%A4%EB%8D%94%EC%8A%A4%EC%B9%B4%EC%9D%B4', note: '：LCT Landmark 100 樓，坐擁 360 度海景。' },
+                    ],
                 },
                 {
                     time: '17:30 - 19:30',
                     title: '海雲台傳統市場漫步 ＆ 溫潤豬肉湯飯',
                     desc: '傍晚來到海灘旁的傳統市場街道，採買當季鮮甜草莓或麝香葡萄回飯店享用。晚餐於市場內品嚐釜山靈魂美食——以大骨慢火細熬至乳白濃郁的豬肉湯飯，搭配軟嫩薄切豬肉片，滋味溫潤醇厚、回甘不膩。',
                     list: [
-                        { label: '在地名店', name: '極東豬肉湯飯 (극동돼지국밥)', url: 'https://maps.google.com/?q=Geukdong+Pork+Soup+Busan', note: '：湯頭澄澈香醇無雜味，薄切豬肉片嫩口多汁。' },
+                        { label: '在地名店', name: '極東豬肉湯飯 (극동돼지국밥)', url: 'https://map.naver.com/p/search/%EA%B7%B9%EB%8F%99%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5', note: '：湯頭澄澈香醇無雜味，薄切豬肉片嫩口多汁。' },
                     ],
                 },
             ],
@@ -119,6 +126,7 @@ TravelAtlas.registerTrip({
                 icon: 'fa-route',
                 desc: '海雲台藍線公園尾浦站 ➔ 青沙浦站 ➔ 釜山 X the SKY ➔ 海雲台傳統市場',
                 stops: ['海雲台藍線公園尾浦站', '青沙浦站', '釜山 X the SKY', '海雲台傳統市場'],
+                naverUrl: 'https://map.naver.com/p/search/%ED%95%B4%EC%9A%B4%EB%8C%80%EB%B8%94%EB%A3%A8%EB%9D%BC%EC%9D%B8%ED%8C%8C%ED%81%AC%20%EB%AF%B8%ED%8F%AC%EC%A0%95%EA%B1%B0%EC%9E%A5',
             },
         },
         {
@@ -132,19 +140,25 @@ TravelAtlas.registerTrip({
                     time: '10:00 - 12:00',
                     title: '松島海上纜車（水晶車廂）',
                     desc: '搭乘計程車前往松島纜車站，搭乘底部全透明的「水晶車廂」，在海峽上空徐徐滑行橫跨松島海面，腳下是清澈碧藍的波濤與往來航行船隻，景致開闊震撼。抵達岩南公園站後於景觀平台眺望海景，悠閒感受海風輕拂。',
+                    list: [
+                        { label: '搭乘地點', name: '松島海上纜車 (송도해상케이블카)', url: 'https://map.naver.com/p/search/%EC%86%A1%EB%8F%84%ED%95%B4%EC%83%81%EC%BC%80%EC%9D%B4%EB%B8%94%EC%B9%B4', note: '：搭乘水晶透明車廂橫跨松島海面。' },
+                    ],
                 },
                 {
                     time: '12:30 - 14:00',
                     title: '南浦洞午餐：老字號雪濃湯 / 韓式水冷麵',
                     desc: '前往歷史悠久的南浦洞商圈，午餐品嚐以牛骨長時間慢熬至雪白的經典「雪濃湯」，滑順濃郁、口感清甜；亦可搭配一份冰鎮酸甜的韓式水冷麵，去油解膩十分爽口。',
                     list: [
-                        { label: '老字號名店', name: '首爾蘿蔔塊雪濃湯 (서울깍두기)', url: 'https://maps.google.com/?q=Seoul+Kkakdugi+Nampo+Busan', note: '：南浦洞老牌雪濃湯，湯頭醇厚回甘、牛肉軟嫩。' },
+                        { label: '老字號名店', name: '首爾蘿蔔塊雪濃湯 (서울깍두기)', url: 'https://map.naver.com/p/search/%EC%84%9C%EC%9A%B8%EA%B9%8D%EB%91%90%EA%B8%B0%20%EB%82%A8%ED%8F%AC', note: '：南浦洞老牌雪濃湯，湯頭醇厚回甘、牛肉軟嫩。' },
                     ],
                 },
                 {
                     time: '14:30 - 17:30',
                     title: '樂天百貨光復店空中花園 ＆ 在地伴手禮採買',
                     desc: '搭乘直達電梯登上樂天百貨頂樓的空中景觀花園，360 度俯瞰影島大橋、釜山港區與龍頭山釜山塔，是避開人潮登高的優雅秘境。<br>下樓後可於樂天超市採購道地伴手禮（韓式海苔、柚子茶、精緻點心）；隨後可漫步至相鄰的 BIFF 廣場，嚐嚐現炸熱呼呼的香酥堅果黑糖餅。',
+                    list: [
+                        { label: '景觀商場', name: '樂天百貨光復店 (롯데백화점 광복점)', url: 'https://map.naver.com/p/search/%EB%A1%AF%EB%8D%B0%EB%B0%B1%ED%99%94%EC%A0%90%20%EA%B4%91%EB%B3%B5%EC%A0%90', note: '：頂樓空中花園遠眺影島大橋與釜山塔。' },
+                    ],
                 },
                 {
                     time: '18:30',
@@ -157,6 +171,7 @@ TravelAtlas.registerTrip({
                 icon: 'fa-cable-car',
                 desc: '松島海上纜車 ➔ 岩南公園 ➔ 南浦洞商圈 ➔ 樂天百貨光復店',
                 stops: ['松島海上纜車', '岩南公園', '樂天百貨光復店', 'BIFF廣場'],
+                naverUrl: 'https://map.naver.com/p/search/%EC%86%A1%EB%8F%84%ED%95%B4%EC%83%81%EC%BC%80%EC%9D%B4%EB%B8%94%EC%B9%B4',
             },
         },
         {
@@ -170,13 +185,16 @@ TravelAtlas.registerTrip({
                     time: '09:30 - 11:00',
                     title: '冬柏島海岸松林木棧道晨散',
                     desc: '冬柏島緊鄰海雲台海灘西側，全區鋪設平整木棧步道，綠樹松蔭蓊鬱。沿途微風徐徐，漫步約 20 分鐘抵達「APEC 世峰樓」觀景台，遠眺廣安大橋與五六島海天一色，享受清晨靜謐舒暢的芬多精時光。',
+                    list: [
+                        { label: '觀景步道', name: '冬柏島 APEC 世峰樓 (누리마루 APEC하우스)', url: 'https://map.naver.com/p/search/%EB%88%84%EB%A6%AC%EB%A7%88%EB%A3%A8%20APEC%ED%95%98%EC%9A%B0%EC%8A%A4', note: '：松林步道與開闊海景。' },
+                    ],
                 },
                 {
                     time: '11:30 - 13:00',
                     title: '午餐：海雲台名物「錦繡河豚湯」',
                     desc: '海雲台知名的一甲子老字號。以新鮮河豚加入黃豆芽、白蘿蔔與水芹菜烹調的清湯（지리），湯頭極致甘甜爽口，魚肉細緻彈牙，是品味釜山海味最令人驚豔的一餐。',
                     list: [
-                        { label: '海港經典', name: '錦繡河豚湯 (금수복국 海雲台總店)', url: 'https://maps.google.com/?q=Geumsu+Bokguk+Haeundae+Busan', note: '：砂鍋熱氣騰騰的清澈鮮魚湯，溫潤甘甜。' },
+                        { label: '海港經典', name: '錦繡河豚湯 (금수복국 海雲台總店)', url: 'https://map.naver.com/p/search/%EA%B8%88%EC%88%98%EB%B3%B5%EA%B5%AD%20%ED%95%B4%EC%9A%B4%EB%8C%80%EB%B3%B8%EC%A0%90', note: '：砂鍋熱氣騰騰的清澈鮮魚湯，溫潤甘甜。' },
                     ],
                 },
                 {
@@ -188,6 +206,9 @@ TravelAtlas.registerTrip({
                     time: '17:30 - 19:00',
                     title: '水營灣遊艇競技場・浪漫夕陽遊艇出海',
                     desc: '此行最浪漫的高潮體驗！於水營灣登船出海航向廣安大橋海域。伴隨夕陽餘暉染紅整片海面，隨後欣賞廣安大橋點亮璀璨夜燈與甲板煙火，在海風輕撫中留下永恆回憶。',
+                    list: [
+                        { label: '登船地點', name: '水營灣遊艇競技場 (부산요트경기장)', url: 'https://map.naver.com/p/search/%EB%B6%80%EC%82%B0%EC%9A%94%ED%8A%B8%EA%B2%BD%EA%B8%B0%EC%9E%A5', note: '：浪漫夕陽與廣安大橋夜色出海。' },
+                    ],
                 },
                 {
                     time: '19:30 - 21:00',
@@ -200,6 +221,7 @@ TravelAtlas.registerTrip({
                 icon: 'fa-ship',
                 desc: '冬柏島 APEC 世峰樓 ➔ 錦繡河豚湯 ➔ 廣安里海水浴場 ➔ 釜山水營灣遊艇競技場',
                 stops: ['冬柏島 APEC世峰樓', '錦繡河豚湯', '廣安里海水浴場', '釜山水營灣遊艇競技場'],
+                naverUrl: 'https://map.naver.com/p/search/%EB%B6%80%EC%82%B0%EC%9A%94%ED%8A%B8%EA%B2%BD%EA%B8%B0%EC%9E%A5',
             },
         },
         {
@@ -218,6 +240,9 @@ TravelAtlas.registerTrip({
                     time: '11:30 - 13:30',
                     title: '西面商圈室內採買',
                     desc: '搭計程車前往釜山交通樞紐西面商圈，在舒適的地下街與百貨商場進行最後採買，挑選生活服飾、質感選物、美妝與伴手禮。',
+                    list: [
+                        { label: '採買商圈', name: '西面地下街 (서면지하상가)', url: 'https://map.naver.com/p/search/%EC%84%9C%EB%A9%B4%EC%A7%80%ED%95%98%EC%83%81%EA%B0%80', note: '：釜山最大室內地下購物商場。' },
+                    ],
                 },
                 {
                     time: '13:30 - 14:30',
@@ -235,6 +260,7 @@ TravelAtlas.registerTrip({
                 icon: 'fa-plane-departure',
                 desc: '海雲台飯店 ➔ 西面地下街 ➔ 金海國際機場',
                 stops: ['海雲台海水浴場', '西面地下街', '金海國際機場'],
+                naverUrl: 'https://map.naver.com/p/search/%EC%84%9C%EB%A9%B4%EC%A7%80%ED%95%98%EC%83%81%EA%B0%80',
             },
         },
     ],
@@ -251,17 +277,17 @@ TravelAtlas.registerTrip({
                 items: [
                     {
                         name: '海雲台 Signiel 釜山 (喜格尼爾)',
-                        url: 'https://maps.google.com/?q=Signiel+Busan',
+                        url: 'https://map.naver.com/p/search/%EC%8B%9C%EA%B7%B8%EB%8B%88%EC%97%98%20%EB%B6%80%EC%82%B0',
                         desc: '位於 LCT Landmark 內，設施頂級奢華，電梯直通觀景台與商場，坐擁無邊際海景溫水泳池。',
                     },
                     {
                         name: '海雲台 MS Hotel / Lavi De Atlan',
-                        url: 'https://maps.google.com/?q=Haeundae+MS+Hotel',
+                        url: 'https://map.naver.com/p/search/%ED%95%B4%EC%9A%B4%EB%8C%80%20MS%ED%98%B8%ED%85%94',
                         desc: '海景第一排質感之選，下樓即是海雲台平坦沙灘步道，生活機能極佳、視野遼闊。',
                     },
                     {
                         name: '樂天飯店 釜山 (西面 Lotte Hotel Busan)',
-                        url: 'https://maps.google.com/?q=Lotte+Hotel+Busan',
+                        url: 'https://map.naver.com/p/search/%EB%A1%AF%EB%8D%B0%ED%98%B8%ED%85%94%20%EB%B6%80%EC%82%B0',
                         desc: '位於釜山心臟西面樞紐，內部電梯直達樂天百貨、樂天超市與地下商圈，室內動線無比舒適。',
                     },
                 ],
@@ -272,23 +298,23 @@ TravelAtlas.registerTrip({
                 color: 'accent2',
                 items: [
                     {
-                        name: '錦繡河豚湯 (복국)',
-                        url: 'https://maps.google.com/?q=Geumsu+Bokguk+Haeundae+Busan',
+                        name: '錦繡河豚湯 (금수복국)',
+                        url: 'https://map.naver.com/p/search/%EA%B8%88%EC%88%98%EB%B3%B5%EA%B5%AD%20%ED%95%B4%EC%9A%B4%EB%8C%80%EB%B3%B8%EC%A0%90',
                         desc: '清爽甘甜的砂鍋河豚清湯，黃豆芽與細嫩魚肉交織出無比鮮美滋味，暖胃首選。',
                     },
                     {
                         name: '鮑魚海帶湯定食 (전복미역국)',
-                        url: 'https://maps.google.com/?q=Seaweed+Soup+Busan',
+                        url: 'https://map.naver.com/p/search/%ED%92%8D%EC%9B%90%EC%9E%A5%20%EB%AF%B8%EC%97%AD%EA%B5%AD%EC%A0%95%EC%8B%9D%20%ED%95%B4%EC%9A%B4%EB%8C%80',
                         desc: '濃郁高湯長時間熬透鮮嫩海帶，搭配整顆飽滿鮮鮑魚，營養溫補。',
                     },
                     {
-                        name: '極東豬肉湯飯 (돼지국밥)',
-                        url: 'https://maps.google.com/?q=Geukdong+Pork+Soup+Busan',
+                        name: '極東豬肉湯飯 (극동돼지국밥)',
+                        url: 'https://map.naver.com/p/search/%EA%B7%B9%EB%8F%99%EB%8F%BC%EC%A7%80%EA%B5%AD%EB%B0%A5',
                         desc: '釜山靈魂美食，大骨慢燉出乳白清甜湯頭，搭配軟嫩薄切豬肉片，滋味醇厚回甘。',
                     },
                     {
-                        name: '東萊滋補人蔘雞湯 (삼계탕)',
-                        url: 'https://maps.google.com/?q=Dongnae+Samgyetang+Busan',
+                        name: '東萊滋補人蔘雞湯 (동래삼계탕)',
+                        url: 'https://map.naver.com/p/search/%EB%8F%99%EB%9E%98%EC%82%BC%EA%B3%84%ED%83%95',
                         desc: '燉煮至骨肉自如分離的童子雞，肚內滿載人蔘、紅棗與軟糯米粥，香氣醇厚迷人。',
                     },
                 ],
@@ -302,6 +328,7 @@ TravelAtlas.registerTrip({
         icon: 'fa-map',
         desc: '金海機場 ➔ 海雲台海水浴場 ➔ 青沙浦 ➔ 松島海上纜車 ➔ 樂天光復 ➔ 廣安里 ➔ 西面',
         stops: ['金海國際機場', '海雲台海水浴場', '青沙浦', '松島海上纜車', '樂天百貨光復店', '廣安里海水浴場', '西面地下街'],
+        naverUrl: 'https://map.naver.com/p/search/%EB%B6%80%EC%82%B0%20%ED%95%B4%EC%9A%B4%EB%8C%80',
     },
 
     // ---- AI 嚮導 ----

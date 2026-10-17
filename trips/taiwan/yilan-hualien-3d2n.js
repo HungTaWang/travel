@@ -6,6 +6,7 @@ TravelAtlas.registerTrip({
     id: 'yilan-hualien-3d2n',
     region: 'taiwan',
     status: 'published', // published | planning
+    mapMode: 'google-embed', // 宜花路線直接以 Google Maps 原生畫面預覽，不需額外繪製圖標
 
     // ---- 卡片 / 頁面基本資訊 ----
     title: '宜花三天兩夜',
@@ -128,13 +129,17 @@ TravelAtlas.registerTrip({
             id: 'day3',
             tab: '藝文賦歸',
             title: '吉安禪意與靜謐庭園',
-            path: '花蓮市區 ➔ 吉安慶修院 ➔ City Lotus Garden ➔ 伴手禮 ➔ 賦歸',
+            path: '花蓮市區 ➔ 吉安慶修院 ➔ 蓮城蓮花園 ➔ 伴手禮 ➔ 賦歸',
             color: 'accent3',
             items: [
                 {
                     time: '09:30 - 12:00',
-                    title: '吉安慶修院與 City Lotus Garden',
-                    desc: '早上從市區搭乘計程車前往吉安鄉（約15-20分鐘）。先參觀保存最完整的日式寺院「吉安慶修院」，體驗靜謐的枯山水庭園。接著前往免門票的「City Lotus Garden, No. 66號, Nanhua 5th St, Nanhua Village, Ji’an Township, Hualien County, 973」賞花並品嚐免費的蓮花茶，享受悠閒寧靜的時光。',
+                    title: '吉安慶修院與蓮城蓮花園',
+                    desc: '早上從市區搭乘計程車前往吉安鄉（約15-20分鐘）。先參觀保存最完整的日式寺院「吉安慶修院」，體驗靜謐的枯山水庭園。接著前往免門票的「蓮城蓮花園」（花蓮縣吉安鄉南華五街66號）漫步賞蓮，並品嚐園主現沖的清香蓮花茶，享受清幽愜意的田園晨光。',
+                    list: [
+                        { name: '吉安慶修院', url: 'https://maps.google.com/?cid=16084803975549000637', note: '：保存最完整的日式寺院，靜謐枯山水與八十八尊石佛。' },
+                        { name: '蓮城蓮花園', url: 'https://maps.google.com/?cid=8292075535878436426', note: '：免門票參觀，賞蓮並品嚐免費現泡蓮花茶（吉安鄉南華五街66號）。' },
+                    ],
                     rainPlan: '改往吉安好客藝術村看展覽與歷史建築',
                 },
                 {
@@ -160,8 +165,8 @@ TravelAtlas.registerTrip({
             map: {
                 title: 'Day 3 藝文賦歸',
                 icon: 'fa-water',
-                desc: '吉安(慶修院、City Lotus Garden、午餐) ➔ 花蓮市區(伴手禮) ➔ 賦歸',
-                stops: ['花蓮火車站', '吉安慶修院', 'City Lotus Garden, No. 66號, Nanhua 5th St, Nanhua Village, Ji’an Township, Hualien County, 973', '慶豐麵店', '花蓮火車站'],
+                desc: '吉安(慶修院、蓮城蓮花園、午餐) ➔ 花蓮市區(伴手禮) ➔ 賦歸',
+                stops: ['花蓮火車站', '吉安慶修院', '蓮城蓮花園', '慶豐麵店', '花蓮火車站'],
             },
         },
     ],
