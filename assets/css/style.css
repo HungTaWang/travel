@@ -1,0 +1,300 @@
+/* ============================================================
+   旅圖集 Travel Atlas — 共用樣式
+   ============================================================ */
+:root {
+    --c-bg: #FAF7F2;
+    --c-text: #3C3633;
+    --c-muted: #938A84;
+    --c-accent1: #C68B7C;
+    --c-accent2: #8FA0A8;
+    --c-accent3: #D8C2AD;
+    --c-accent4: #9AA89B;
+    --c-border: #EFEAE2;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    background-color: var(--c-bg);
+    color: var(--c-text);
+}
+
+section[id],
+header[id] {
+    scroll-margin-top: 4.5rem;
+}
+
+.view-enter {
+    animation: viewEnter 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes viewEnter {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------- 首頁 Hero ---------- */
+.atlas-hero {
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+}
+
+.atlas-hero .blob {
+    position: absolute;
+    border-radius: 9999px;
+    filter: blur(70px);
+    opacity: 0.55;
+    z-index: -1;
+    animation: drift 18s ease-in-out infinite alternate;
+}
+
+.atlas-hero .blob-1 {
+    width: 440px;
+    height: 440px;
+    background: #F5E3D8;
+    top: -120px;
+    left: -80px;
+}
+
+.atlas-hero .blob-2 {
+    width: 380px;
+    height: 380px;
+    background: #E7EEF1;
+    top: 40px;
+    right: -100px;
+    animation-delay: -6s;
+}
+
+.atlas-hero .blob-3 {
+    width: 320px;
+    height: 320px;
+    background: #F7EFE4;
+    bottom: -140px;
+    left: 35%;
+    animation-delay: -12s;
+}
+
+@keyframes drift {
+    from {
+        transform: translate(0, 0) scale(1);
+    }
+
+    to {
+        transform: translate(40px, 30px) scale(1.12);
+    }
+}
+
+.region-chip {
+    transition: all 0.25s ease;
+}
+
+.region-chip.is-active {
+    background: var(--c-text);
+    color: #fff;
+    border-color: var(--c-text);
+}
+
+/* ---------- 行程卡片 ---------- */
+.trip-card {
+    transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.45s ease;
+}
+
+.trip-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 18px 40px -18px rgba(58, 63, 61, 0.28);
+}
+
+.trip-card .cover {
+    transition: transform 1s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.trip-card:hover .cover {
+    transform: scale(1.06);
+}
+
+.placeholder-card {
+    background-image: repeating-linear-gradient(135deg, transparent 0 14px, rgba(232, 230, 225, 0.45) 14px 15px);
+    transition: border-color 0.3s ease, background-color 0.3s ease;
+}
+
+.placeholder-card:hover {
+    border-color: var(--c-accent1);
+    background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* ---------- 行程頁 Hero ---------- */
+.hero-bg {
+    background-image: linear-gradient(to bottom, rgba(249, 248, 246, 0.4), rgba(249, 248, 246, 1)), var(--hero-img);
+    background-size: cover;
+    background-position: center;
+}
+
+/* ---------- Timeline ---------- */
+.timeline-container {
+    position: relative;
+    padding-left: 2rem;
+    border-left: 1px solid var(--c-accent3);
+    margin-left: 1rem;
+}
+
+@media (min-width: 768px) {
+    .timeline-container {
+        margin-left: 0;
+    }
+}
+
+.timeline-item {
+    position: relative;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: calc(-2rem - 6.5px);
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: var(--c-bg);
+    border: 2px solid var(--dot, var(--c-accent1));
+}
+
+/* ---------- Day Tabs ---------- */
+.day-tab {
+    color: var(--c-muted);
+    border-bottom: 2px solid transparent;
+}
+
+.day-tab:hover {
+    color: var(--c-text);
+}
+
+.day-tab.tab-active {
+    border-bottom-color: var(--tab-color, var(--c-accent1));
+    color: var(--c-text);
+    font-weight: 600;
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ---------- Map Cards ---------- */
+.map-card {
+    border-color: var(--c-border);
+    cursor: pointer;
+}
+
+.map-card:hover,
+.map-card.is-active {
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.map-card.is-active {
+    border-color: var(--c-accent1);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* ---------- AI Chatbot ---------- */
+#ai-chat-toggle {
+    transition: transform 0.3s ease, opacity 0.3s ease, background-color 0.3s ease;
+}
+
+#ai-chat-widget {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(120%) scale(0.9);
+    opacity: 0;
+    pointer-events: none;
+}
+
+#ai-chat-widget.active {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.chat-bubble-user {
+    background-color: var(--c-accent1);
+    color: white;
+    border-radius: 12px 12px 0 12px;
+}
+
+.chat-bubble-ai {
+    background-color: var(--c-bg);
+    border: 1px solid var(--c-border);
+    color: var(--c-text);
+    border-radius: 12px 12px 12px 0;
+}
+
+.typing-indicator span {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: var(--c-accent2);
+    border-radius: 50%;
+    animation: typing 1.4s infinite both;
+    margin: 0 2px;
+}
+
+.typing-indicator span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-indicator span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typing {
+
+    0%,
+    80%,
+    100% {
+        transform: scale(0);
+        opacity: 0.5;
+    }
+
+    40% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation: none !important;
+        transition: none !important;
+    }
+}

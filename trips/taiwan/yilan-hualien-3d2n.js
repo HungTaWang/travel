@@ -1,0 +1,217 @@
+/**
+ * 宜花三天兩夜大自然走讀計畫
+ * 欄位說明請見 trips/_template.js
+ */
+TravelAtlas.registerTrip({
+    id: 'yilan-hualien-3d2n',
+    region: 'taiwan',
+    status: 'published', // published | planning
+
+    // ---- 卡片 / 頁面基本資訊 ----
+    title: '宜花三天兩夜',
+    pageTitle: '雅緻東岸｜宜花三天兩夜鐵道漫遊',
+    brand: '東岸雅行',
+    area: '宜蘭・花蓮',
+    duration: '3 天 2 夜',
+    transport: '火車・客運・計程車',
+    tags: ['鐵道', '溫泉', '海岸', '夜市'],
+    summary: '從蘭陽平原的田野風光，到花東海岸的壯闊波瀾，全程不租車的鐵道慢旅。',
+    cover: 'assets/images/taiwan-east-coast.jpg',
+
+    // ---- Hero ----
+    hero: {
+        tagline: 'Nature & Railway',
+        title: '宜花三天兩夜<br>大自然走讀計畫',
+        description: '從蘭陽平原的田野風光，到花東海岸的壯闊波瀾。<br>與好友同行，品味東海岸的純粹。',
+    },
+
+    // ---- 移動軌跡 ----
+    route: {
+        title: '移動軌跡',
+        subtitle: '輕鬆漫步於宜花山海之間',
+        stops: [
+            { name: '台北', label: '出發地', color: 'accent2' },
+            { name: '宜蘭礁溪/羅東', label: 'Day 1', icon: 'fa-tree', note: '溫泉與農場', color: 'accent1' },
+            { name: '花蓮市區/七星潭', label: 'Day 2', icon: 'fa-train', note: '鐵道與海灣', color: 'accent2' },
+            { name: '花蓮吉安', label: 'Day 3', icon: 'fa-camera-retro', note: '藝文與尋味', color: 'accent3' },
+        ],
+    },
+
+    // ---- 每日行程 ----
+    days: [
+        {
+            id: 'day1',
+            tab: '蘭陽青旅',
+            title: '綠意與農場的漫步',
+            path: '礁溪 ➔ 鐵道 ➔ 羅東 ➔ 計程車接駁 ➔ 三星',
+            color: 'accent1',
+            items: [
+                {
+                    time: '10:30 - 12:00',
+                    title: '林美石磐步道',
+                    desc: '享受礁溪的低海拔森林與溪流瀑布，步道平緩好走，沐浴在芬多精中。',
+                },
+                {
+                    time: '12:30 - 14:00',
+                    title: '礁溪平價美食尋寶',
+                    desc: '下山回到礁溪市區用餐。可以選擇在地知名的排隊小吃，或是有質感的平價文青麵館。',
+                    list: [
+                        { label: '小吃派', name: '柯氏蔥油餅', url: 'https://maps.google.com/?cid=11398737450042948607', note: ' + 吳記花生捲冰淇淋。' },
+                        { label: '餐廳派', name: '弎蒔手作料理', url: 'https://maps.google.com/?cid=14985965730394188277', note: ' (平價美味的台式定食與私房菜)。' },
+                    ],
+                },
+                {
+                    time: '15:00 - 17:00',
+                    title: '張美阿嬤農場與羅東林場',
+                    desc: '搭火車至羅東，轉計程車前往三星體驗餵食水豚與笑笑羊。接著返回羅東林業文化園區，漫步於充滿檜木香與舊鐵道風情的園區。',
+                },
+                {
+                    time: '18:00 - 20:00',
+                    title: '羅東夜市與入住',
+                    desc: '晚餐於羅東夜市享用在地小吃（如阿灶伯當歸羊肉湯、蔥肉串）。',
+                    stay: '入住羅東平價青年旅宿。',
+                },
+            ],
+            map: {
+                title: 'Day 1 宜蘭戶外行',
+                icon: 'fa-map-location-dot',
+                desc: '礁溪(林美石磐步道) ➔ 三星(張美阿嬤農場) ➔ 羅東(林場、夜市)',
+                stops: ['礁溪火車站', '林美石磐步道', '弎蒔手作料理', '張美阿嬤農場', '羅東林業文化園區', '羅東夜市'],
+            },
+        },
+        {
+            id: 'day2',
+            tab: '海灣尋幽',
+            title: '海灣與鐵道的相遇',
+            path: '花蓮車站 ➔ 七星潭 ➔ 市區午餐 ➔ 松園別館 ➔ 東大門夜市',
+            color: 'accent2',
+            items: [
+                {
+                    time: '10:00 - 12:00',
+                    title: '七星潭與柴魚博物館',
+                    desc: '搭乘台鐵抵達花蓮後，先搭乘「台灣好行-太魯閣線」或計程車前往美麗的月牙灣——七星潭踏浪聽海，並順道參觀一旁的「七星柴魚博物館」體驗手作樂趣，享受迷人的東海岸晨光。',
+                    rainPlan: '改往花蓮文化創意產業園區看展覽',
+                },
+                {
+                    time: '12:30 - 14:00',
+                    title: '美崙海鮮午餐',
+                    desc: '午餐安排在花蓮知名的海鮮餐廳：',
+                    list: [
+                        { name: '花蓮美崙海鮮', url: 'https://maps.app.goo.gl/vMaNLBvCMNkMMjC19?g_st=ii', note: '：在地人氣海鮮餐廳，品嚐新鮮海產。' },
+                    ],
+                },
+                {
+                    time: '14:30 - 17:00',
+                    title: '松園別館與將軍府',
+                    desc: '午餐後自市區前往被百年松樹環繞的松園別館，俯瞰花蓮港與太平洋。接著順遊附近的「將軍府1936園區」，感受日式宿舍群的幽靜與歷史風華，度過放鬆的午後。',
+                },
+                {
+                    time: '18:30 - 20:30',
+                    title: '東大門夜市與入住',
+                    desc: '晚上前往花蓮最大的「東大門夜市」逛逛，集結了原住民風味餐、各色小吃與遊戲攤位，熱鬧非凡。',
+                    list: [
+                        { label: '必吃推薦', note: '原香嘟論竹筒飯、林記燒番麥、第一家烤肉串。' },
+                        { label: '創意小吃', name: '彩虹臭薯條 (A43攤位)', url: 'https://maps.app.goo.gl/1HAN1krN1NotPyTz9' },
+                        { label: '人氣炸物', name: '宜蘭香炸螃蟹', url: 'https://maps.app.goo.gl/C6GspdYuarKd8a937' },
+                    ],
+                    stay: '入住花蓮市區平價設計旅宿。',
+                },
+            ],
+            map: {
+                title: 'Day 2 海灣尋幽',
+                icon: 'fa-route',
+                desc: '七星潭(柴魚博物館) ➔ 花蓮美崙海鮮 ➔ 市區(松園別館、將軍府) ➔ 東大門夜市',
+                stops: ['花蓮火車站', '七星柴魚博物館', '七星潭風景區', '花蓮美崙海鮮', '松園別館', '將軍府1936園區', '東大門夜市'],
+            },
+        },
+        {
+            id: 'day3',
+            tab: '藝文賦歸',
+            title: '吉安禪意與靜謐庭園',
+            path: '花蓮市區 ➔ 吉安慶修院 ➔ City Lotus Garden ➔ 伴手禮 ➔ 賦歸',
+            color: 'accent3',
+            items: [
+                {
+                    time: '09:30 - 12:00',
+                    title: '吉安慶修院與 City Lotus Garden',
+                    desc: '早上從市區搭乘計程車前往吉安鄉（約15-20分鐘）。先參觀保存最完整的日式寺院「吉安慶修院」，體驗靜謐的枯山水庭園。接著前往免門票的「City Lotus Garden, No. 66號, Nanhua 5th St, Nanhua Village, Ji’an Township, Hualien County, 973」賞花並品嚐免費的蓮花茶，享受悠閒寧靜的時光。',
+                    rainPlan: '改往吉安好客藝術村看展覽與歷史建築',
+                },
+                {
+                    time: '12:30 - 14:00',
+                    title: '吉安在地美食午餐',
+                    desc: '午餐可選擇吉安鄉在地人氣小吃：',
+                    list: [
+                        { name: '慶豐麵店', url: 'https://maps.app.goo.gl/CPB3cyiohfYXo7Lv6?g_st=ii', note: '：吉安鄉知名老店，招牌麵食與豐富小菜。' },
+                        { name: '西村的家', url: 'https://maps.app.goo.gl/77FK3fKozuQ5g4v6A?g_st=ii', note: '：日式老屋改建的溫馨食堂，主打平價肉燥飯與家常麵。' },
+                    ],
+                },
+                {
+                    time: '14:30 - 15:30',
+                    title: '伴手禮採買時光',
+                    desc: '返回花蓮市區的中華路或中山路商圈。必買清單包含：曾記麻糬、弘宇蛋糕（芋泥千層）、奶油酥條，或具特色的百年老店名產。',
+                },
+                {
+                    time: '16:00',
+                    title: '花蓮車站，滿載賦歸',
+                    desc: '帶著滿滿的回憶與伴手禮，前往花蓮火車站搭乘列車返回溫暖的家，結束這趟美好的東岸放鬆之旅。',
+                },
+            ],
+            map: {
+                title: 'Day 3 藝文賦歸',
+                icon: 'fa-water',
+                desc: '吉安(慶修院、City Lotus Garden、午餐) ➔ 花蓮市區(伴手禮) ➔ 賦歸',
+                stops: ['花蓮火車站', '吉安慶修院', 'City Lotus Garden, No. 66號, Nanhua 5th St, Nanhua Village, Ji’an Township, Hualien County, 973', '慶豐麵店', '花蓮火車站'],
+            },
+        },
+    ],
+
+    // ---- 嚴選清單 ----
+    curated: {
+        title: '嚴選清單',
+        subtitle: '高 CP 值平價旅宿與在地美食推薦',
+        groups: [
+            {
+                title: '平價質感旅宿推薦',
+                icon: 'fa-bed',
+                color: 'accent1',
+                items: [
+                    { name: '靈感青年旅舍 (羅東)', url: 'https://maps.google.com/?cid=465368447026004904', desc: '隱身市區的清新設計旅宿，提供舒適的多人房型，CP值極高。' },
+                    { name: '洄瀾窩青年旅舍 (花蓮)', url: 'https://maps.google.com/?cid=415246593037139912', desc: '位於花蓮車站正前方，工業風設計，生活機能滿分。' },
+                    { name: '承億文旅 花蓮山知道 (花蓮)', url: 'https://maps.google.com/?cid=3604607866170540012', desc: '結合攀岩與藝術元素的文創旅館，空間寬敞舒適。' },
+                ],
+            },
+            {
+                title: '沿途必吃美食',
+                icon: 'fa-utensils',
+                color: 'accent2',
+                items: [
+                    { name: '弎蒔手作料理 (礁溪)', url: 'https://maps.google.com/?cid=14985965730394188277', desc: '隱藏版的平價私廚台菜，精緻定食讓午餐也能很有儀式感。' },
+                    { name: '老時光燒肉酒肴 (花蓮)', url: 'https://maps.google.com/?cid=8775208986188984978', desc: '花蓮氣氛最棒的居酒屋，串燒與特調飲品是好友聚會首選。' },
+                    { name: '萬寶家食堂 (花蓮)', url: 'https://maps.google.com/?cid=5611042549380387909', desc: '文青復古風的台式餐館，招牌梅干扣肉飯平價又銷魂。' },
+                ],
+            },
+        ],
+    },
+
+    // ---- 導航地圖（總覽；各日地圖寫在 days[].map）----
+    mapOverview: {
+        title: '三天總路線圖',
+        icon: 'fa-map',
+        desc: '台北出發 ➔ 宜蘭礁溪、羅東 ➔ 花蓮市區、七星潭 ➔ 吉安鄉',
+        stops: ['台北火車站', '礁溪火車站', '羅東火車站', '花蓮火車站'],
+    },
+
+    // ---- AI 嚮導 ----
+    ai: {
+        name: '東岸戶外嚮導 AI',
+        greeting: '哈囉！我是您的專屬戶外行程顧問 ✨<br>有任何關於這趟「宜花三天兩夜」的想法都可以問我喔！例如：',
+        suggestions: ['太魯閣目前有交通管制嗎？', '戶外行程該準備什麼裝備？', '如果下雨有什麼備案？'],
+        context: `目前使用者正在瀏覽「宜花三天兩夜大自然走讀計畫」。
+行程重點（全程不租車，依靠火車、客運與計程車）：
+Day1: 宜蘭礁溪(林美石磐步道)、轉火車至羅東轉計程車至三星(張美阿嬤農場)、羅東(林業文化園區、夜市)。
+Day2: 搭火車至花蓮市區，早上前往七星潭與柴魚博物館，下午走訪松園別館、將軍府，晚上前往東大門夜市逛逛。
+Day3: 花蓮吉安(慶修院、蓮城蓮花園，雨天備案：吉安好客藝術村) -> 伴手禮 -> 賦歸。
+請用繁體中文回答，語氣專業且具雅緻北歐風格，提供實用的建議與雨天備案。`,
+    },
+});
