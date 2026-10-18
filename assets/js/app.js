@@ -505,6 +505,9 @@ ${list}
         '西面辣炒年糕一條街': [35.1558, 129.0583],
         '西面商圈': [35.1578, 129.0592],
         '西面': [35.1578, 129.0592],
+        '札嘎其水產市場': [35.0967, 129.0306],
+        '札嘎其市場': [35.0967, 129.0306],
+        '田浦咖啡街': [35.1568, 129.0645],
     };
 
     // 韓國景點韓文官方名稱表（供 Naver Map 精準導航與地標對照）
@@ -555,6 +558,9 @@ ${list}
         '西面辣炒年糕一條街': '서면 떡볶이 골목',
         '西面商圈': '서면',
         '西面': '서면',
+        '札嘎其水產市場': '자갈치시장',
+        '札嘎其市場': '자갈치시장',
+        '田浦咖啡街': '전포카페거리',
     };
 
     function resolveCoords(stop) {
@@ -565,8 +571,16 @@ ${list}
             stop = stop.name || '';
         }
         if (AtlasGeoTable[stop]) return AtlasGeoTable[stop];
+        // 忽略空白差異（例如「BIFF 廣場」與「BIFF廣場」）
+        const norm = (s) => String(s).replace(/\s+/g, '');
+        const key = norm(stop);
+        if (!key) return null;
         for (const [name, coords] of Object.entries(AtlasGeoTable)) {
-            if (stop.includes(name) || name.includes(stop)) return coords;
+            if (norm(name) === key) return coords;
+        }
+        for (const [name, coords] of Object.entries(AtlasGeoTable)) {
+            const n = norm(name);
+            if (key.includes(n) || n.includes(key)) return coords;
         }
         return null;
     }
@@ -596,6 +610,8 @@ ${list}
         markersLayer: null,
     };
     let currentMapEntries = {};
+    let currentMapKey = null;
+    let currentSeries = [];
 
     const colorHex = {
         accent1: '#C68B7C',
@@ -604,12 +620,36 @@ ${list}
         accent4: '#9AA89B',
     };
 
+    // 地圖專用的每日路線色：總覽與單日地圖共用，同一天永遠同一個顏色
+    // 可在行程檔的 days[].map.mapColor 個別覆寫
+    const DAY_PALETTE = ['#C9705B', '#4F86B5', '#D9A23E', '#6E9E6A', '#9572B0', '#4FA3A0', '#B5657F'];
+    // 螢幕上距離小於此像素的站點會合併成一個圖標（避免重疊），縮放後會自動重新計算
+    const PIN_MERGE_PX = 30;
+
     function mapTpl(t) {
         const entries = [];
-        if (t.mapOverview?.stops?.length) entries.push({ key: 'overview', color: 'accent1', ...t.mapOverview });
-        (t.days || []).forEach((d) => {
-            if (d.map?.stops?.length) entries.push({ key: d.id, color: d.color || 'accent1', ...d.map });
+        const dayEntries = [];
+        (t.days || []).forEach((d, i) => {
+            if (!d.map?.stops?.length) return;
+            dayEntries.push({
+                key: d.id,
+                color: d.color || 'accent1',
+                dayNo: i + 1,
+                dayTab: d.tab || '',
+                hex: d.map.mapColor || DAY_PALETTE[i % DAY_PALETTE.length],
+                ...d.map,
+            });
         });
+        const ov = t.mapOverview;
+        if (ov && (ov.byDay ? dayEntries.length : ov.stops?.length)) {
+            entries.push({
+                key: 'overview',
+                color: 'accent1',
+                ...ov,
+                stops: ov.byDay ? dayEntries.flatMap((e) => e.stops) : ov.stops,
+            });
+        }
+        entries.push(...dayEntries);
         if (!entries.length) return '';
 
         currentMapEntries = Object.fromEntries(entries.map((e) => [e.key, e]));
@@ -649,6 +689,7 @@ ${list}
                             <div role="button" tabindex="0" data-map="${esc(e.key)}" id="btn-map-${esc(e.key)}"
                                 class="map-card ${i === 0 ? 'is-active' : ''} p-5 bg-white border rounded-xl transition-all text-left group focus:outline-none cursor-pointer">
                                 <h4 class="font-serif text-lg text-nordic-${esc(e.color)} mb-2 group-hover:text-nordic-text transition-colors flex items-center">
+                                    ${e.hex ? `<span class="inline-block w-2.5 h-2.5 rounded-full mr-2 shrink-0" style="background:${esc(e.hex)}"></span>` : ''}
                                     <i class="fa-solid ${esc(e.icon || 'fa-map-location-dot')} mr-2"></i>${esc(e.title)}
                                 </h4>
                                 ${e.desc ? `<p class="text-xs text-nordic-muted leading-relaxed">${esc(e.desc)}</p>` : ''}
@@ -673,6 +714,7 @@ ${list}
                             </iframe>
                         ` : `
                             <div id="interactive-map" class="w-full h-full z-0"></div>
+                            <div id="map-legend" class="map-legend hidden absolute top-4 left-4 z-[400]"></div>
                         `}
                         <div class="absolute top-4 right-4 z-[400]">
                             <a id="btn-open-gmaps" href="${esc(firstNavUrl)}" target="_blank" rel="noopener noreferrer"
@@ -721,89 +763,79 @@ ${list}
         mapLayers.routeLayer = L.featureGroup().addTo(leafletMap);
         mapLayers.markersLayer = L.featureGroup().addTo(leafletMap);
 
+        // 縮放後重新判斷哪些站點會重疊，重疊的合併、拉近後自動拆開
+        leafletMap.on('zoomend', drawMarkers);
+
         if (activeKey && currentMapEntries[activeKey]) {
             renderRouteOnMap(activeKey);
         }
     }
 
+    /**
+     * 將地圖項目轉成「路線系列」：
+     * - 總覽（mapOverview.byDay = true）：每一天一條路線、各自顏色
+     * - 單日 / 一般總覽：一條路線
+     */
+    function getMapSeries(entry) {
+        const toPoints = (stops) => (stops || []).map((stop, i) => {
+            const name = typeof stop === 'object' ? stop.name : stop;
+            const latlng = resolveCoords(stop);
+            if (!latlng) console.warn('[map] 找不到座標：', name);
+            return latlng ? { name, latlng, order: i + 1 } : null;
+        }).filter(Boolean);
+
+        if (entry.byDay) {
+            return Object.values(currentMapEntries)
+                .filter((e) => e.key !== 'overview')
+                .map((e) => ({ key: e.key, dayNo: e.dayNo, tab: e.dayTab, hex: e.hex, points: toPoints(e.stops) }));
+        }
+        return [{
+            key: entry.key,
+            dayNo: entry.dayNo,
+            tab: entry.dayTab,
+            hex: entry.hex || colorHex[entry.color] || '#C68B7C',
+            points: toPoints(entry.stops),
+        }];
+    }
+
     function renderRouteOnMap(key) {
         if (!leafletMap || !currentMapEntries[key]) return;
         const entry = currentMapEntries[key];
-        const hex = colorHex[entry.color] || '#C68B7C';
+        const isOverview = !!entry.byDay;
+        const isKorea = currentTrip?.region === 'korea' || currentTrip?.mapProvider === 'naver';
+        currentMapKey = key;
 
         mapLayers.routeLayer.clearLayers();
-        mapLayers.markersLayer.clearLayers();
+        currentSeries = getMapSeries(entry);
 
-        const latlngs = [];
-        const stops = entry.stops || [];
-        const isKorea = currentTrip?.region === 'korea' || currentTrip?.mapProvider === 'naver';
-
-        stops.forEach((stop, index) => {
-            const stopName = typeof stop === 'object' ? stop.name : stop;
-            const coords = resolveCoords(stop);
-            if (!coords) return;
-
-            latlngs.push(coords);
-
-            const pinIcon = L.divIcon({
-                className: 'custom-div-icon',
-                html: `<div class="route-pin" style="background-color: ${hex};">${index + 1}</div>`,
-                iconSize: [28, 28],
-                iconAnchor: [14, 14],
-                popupAnchor: [0, -14],
-            });
-
-            const marker = L.marker(coords, { icon: pinIcon });
-            const krName = AtlasKoreaNames[stopName] || '';
-            const searchUrl = isKorea
-                ? naverDirections([stopName], 'car')
-                : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(stopName)}`;
-            const providerName = isKorea ? 'Naver Map' : 'Google Maps';
-
-            const popupHtml = `
-                <div class="p-2 min-w-[170px]">
-                    <div class="text-[10px] tracking-wider text-nordic-muted uppercase">第 ${index + 1} 站</div>
-                    <div class="font-serif font-medium text-sm text-nordic-text mt-0.5">${esc(stopName)}</div>
-                    ${krName ? `<div class="text-[11px] text-nordic-muted mt-0.5 font-sans">${esc(krName)}</div>` : ''}
-                    <a href="${esc(searchUrl)}" target="_blank" rel="noopener noreferrer"
-                       class="mt-2 text-xs text-nordic-accent1 font-medium hover:underline inline-flex items-center gap-1">
-                        在 ${providerName} 開啟導航 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
-                    </a>
-                </div>
-            `;
-            marker.bindPopup(popupHtml);
-            mapLayers.markersLayer.addLayer(marker);
+        const allLatLngs = [];
+        currentSeries.forEach((s) => {
+            const latlngs = s.points.map((p) => p.latlng);
+            allLatLngs.push(...latlngs);
+            s.layers = [];
+            if (latlngs.length < 2) return;
+            const casing = L.polyline(latlngs, {
+                color: '#ffffff', weight: isOverview ? 7 : 8, opacity: 0.85, baseOpacity: 0.85,
+                lineCap: 'round', lineJoin: 'round',
+            }).addTo(mapLayers.routeLayer);
+            const line = L.polyline(latlngs, {
+                color: s.hex, weight: isOverview ? 3.5 : 4.5, opacity: 0.95, baseOpacity: 0.95,
+                lineCap: 'round', lineJoin: 'round',
+            }).addTo(mapLayers.routeLayer);
+            s.layers.push(casing, line);
         });
 
-        if (latlngs.length >= 2) {
-            L.polyline(latlngs, {
-                color: '#ffffff',
-                weight: 8,
-                opacity: 0.75,
-                smoothFactor: 1,
-                lineCap: 'round',
-                lineJoin: 'round',
-            }).addTo(mapLayers.routeLayer);
+        renderLegend(entry);
 
-            L.polyline(latlngs, {
-                color: hex,
-                weight: 4.5,
-                opacity: 0.95,
-                smoothFactor: 1,
-                lineCap: 'round',
-                lineJoin: 'round',
-            }).addTo(mapLayers.routeLayer);
-        }
-
-        if (latlngs.length > 0) {
-            const bounds = L.latLngBounds(latlngs);
-            leafletMap.fitBounds(bounds, {
-                padding: [45, 45],
+        if (allLatLngs.length > 0) {
+            leafletMap.fitBounds(L.latLngBounds(allLatLngs), {
+                padding: isOverview ? [40, 40] : [60, 60],
                 maxZoom: 15,
                 animate: true,
                 duration: 0.8,
             });
         }
+        drawMarkers();
 
         const btnOpenGmaps = document.getElementById('btn-open-gmaps');
         if (btnOpenGmaps) {
@@ -814,6 +846,120 @@ ${list}
         }
 
         setTimeout(() => leafletMap?.invalidateSize(), 150);
+    }
+
+    /**
+     * 繪製站點圖標：
+     * - 單日：圖標顯示「第幾站」，旁邊常駐站名標籤
+     * - 總覽：圖標顯示「Day 幾」，顏色對應當天路線
+     * 螢幕上太接近的站點合併為一個圖標（例如「1·6」）
+     */
+    function drawMarkers() {
+        if (!leafletMap || !mapLayers.markersLayer) return;
+        mapLayers.markersLayer.clearLayers();
+        const entry = currentMapEntries[currentMapKey];
+        if (!entry) return;
+        const isOverview = !!entry.byDay;
+        const isKorea = currentTrip?.region === 'korea' || currentTrip?.mapProvider === 'naver';
+        const providerName = isKorea ? 'Naver Map' : 'Google Maps';
+
+        const items = [];
+        currentSeries.forEach((s) => s.points.forEach((p) => items.push({ ...p, hex: s.hex, dayNo: s.dayNo, seriesKey: s.key })));
+
+        const groups = [];
+        items.forEach((it) => {
+            const pt = leafletMap.latLngToLayerPoint(it.latlng);
+            const g = groups.find((grp) => grp.pt.distanceTo(pt) < PIN_MERGE_PX);
+            if (g) g.items.push(it);
+            else groups.push({ pt, latlng: it.latlng, items: [it] });
+        });
+
+        groups.forEach((g) => {
+            const labels = isOverview
+                ? [...new Set(g.items.map((i) => i.dayNo))]
+                : g.items.map((i) => i.order);
+            const text = labels.join('·');
+            const colors = [...new Set(g.items.map((i) => i.hex))];
+            const bg = colors.length > 1
+                ? `linear-gradient(90deg, ${colors.map((c, i) => `${c} ${(i / colors.length) * 100}%, ${c} ${((i + 1) / colors.length) * 100}%`).join(', ')})`
+                : colors[0];
+            const h = isOverview ? 24 : 28;
+            const w = Math.max(h, 14 + text.length * 7);
+
+            const icon = L.divIcon({
+                className: 'custom-div-icon',
+                html: `<div class="route-pin${isOverview ? ' route-pin--day' : ''}" style="background:${bg};width:${w}px;height:${h}px;">${esc(text)}</div>`,
+                iconSize: [w, h],
+                iconAnchor: [w / 2, h / 2],
+                popupAnchor: [0, -h / 2],
+            });
+            const marker = L.marker(g.latlng, { icon, riseOnHover: true });
+            marker.seriesKeys = new Set(g.items.map((i) => i.seriesKey));
+
+            const popupHtml = `
+                <div class="p-2 min-w-[180px] space-y-2">
+                    ${g.items.map((i) => {
+                        const krName = AtlasKoreaNames[i.name] || '';
+                        const searchUrl = isKorea
+                            ? naverDirections([i.name], 'car')
+                            : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(i.name)}`;
+                        return `
+                        <div>
+                            <div class="text-[10px] tracking-wider text-nordic-muted uppercase">
+                                <span class="inline-block w-2 h-2 rounded-full mr-1 align-middle" style="background:${i.hex}"></span>${isOverview ? `Day ${i.dayNo}・` : ''}第 ${i.order} 站
+                            </div>
+                            <div class="font-serif font-medium text-sm text-nordic-text mt-0.5">${esc(i.name)}</div>
+                            ${krName ? `<div class="text-[11px] text-nordic-muted mt-0.5 font-sans">${esc(krName)}</div>` : ''}
+                            <a href="${esc(searchUrl)}" target="_blank" rel="noopener noreferrer"
+                               class="mt-1 text-xs text-nordic-accent1 font-medium hover:underline inline-flex items-center gap-1">
+                                在 ${providerName} 開啟導航 <i class="fa-solid fa-arrow-up-right-from-square text-[9px]"></i>
+                            </a>
+                        </div>`;
+                    }).join('')}
+                </div>`;
+            marker.bindPopup(popupHtml);
+
+            if (!isOverview) {
+                const labelHtml = g.items
+                    .map((i) => `<span class="route-label__no" style="color:${i.hex}">${i.order}</span>${esc(i.name)}`)
+                    .join('<br>');
+                marker.bindTooltip(labelHtml, {
+                    permanent: true,
+                    direction: 'right',
+                    offset: [w / 2 + 2, 0],
+                    className: 'route-label',
+                });
+            }
+            mapLayers.markersLayer.addLayer(marker);
+        });
+    }
+
+    // 總覽圖例：每天一列（顏色＋Day 編號），滑過高亮該日路線、點擊切換到單日地圖
+    function renderLegend(entry) {
+        const el = document.getElementById('map-legend');
+        if (!el) return;
+        if (!entry.byDay) {
+            el.classList.add('hidden');
+            el.innerHTML = '';
+            return;
+        }
+        el.innerHTML = `
+            <div class="map-legend__title">每日路線・點擊查看單日</div>
+            ${currentSeries.map((s) => `
+                <button type="button" class="map-legend__item" data-legend-day="${esc(s.key)}">
+                    <span class="map-legend__swatch" style="background:${s.hex}">${s.dayNo}</span>
+                    <span class="map-legend__text">Day ${s.dayNo}・${esc(s.tab)}</span>
+                </button>`).join('')}`;
+        el.classList.remove('hidden');
+    }
+
+    function highlightSeries(key) {
+        currentSeries.forEach((s) => (s.layers || []).forEach((l) => {
+            l.setStyle({ opacity: !key || s.key === key ? l.options.baseOpacity : 0.12 });
+        }));
+        mapLayers.markersLayer?.eachLayer((m) => {
+            if (m.setOpacity) m.setOpacity(!key || m.seriesKeys?.has(key) ? 1 : 0.25);
+        });
     }
 
     function changeMap(key) {
@@ -882,8 +1028,23 @@ ${list}
             showDay(dayBtn.dataset.day);
             return;
         }
+        const legendBtn = e.target.closest('[data-legend-day]');
+        if (legendBtn) {
+            changeMap(legendBtn.dataset.legendDay);
+            return;
+        }
         const mapBtn = e.target.closest('[data-map]');
         if (mapBtn && !e.target.closest('a')) changeMap(mapBtn.dataset.map);
+    });
+
+    document.addEventListener('mouseover', (e) => {
+        const legendBtn = e.target.closest?.('[data-legend-day]');
+        if (legendBtn) highlightSeries(legendBtn.dataset.legendDay);
+    });
+
+    document.addEventListener('mouseout', (e) => {
+        const legendBtn = e.target.closest?.('[data-legend-day]');
+        if (legendBtn && !legendBtn.contains(e.relatedTarget)) highlightSeries(null);
     });
 
     document.addEventListener('keydown', (e) => {
