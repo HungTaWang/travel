@@ -79,7 +79,7 @@ TravelAtlas.registerTrip({
                 icon: 'fa-hot-tub-person',
                 desc: '金海國際機場 ➔ 海雲台海水浴場 ➔ 新世界百貨 Centum City (Spa Land) ➔ 廣安里海水浴場',
                 stops: ['金海國際機場', '海雲台海水浴場', '新世界百貨 Centum City', '廣安里海水浴場'],
-                naverUrl: 'https://map.naver.com/p/directions/128.9382,35.1795,김해국제공항/129.1604,35.1587,해운대해수욕장/129.1296,35.1689,신세계백화점%20센텀시티점/129.1186,35.1532,광안리해수욕장/-/car',
+                naverUrl: 'https://naver.me/I5whHaEh',
             },
         },
         {
@@ -148,7 +148,7 @@ TravelAtlas.registerTrip({
                 icon: 'fa-train-subway',
                 desc: '海雲台藍線公園尾浦站 ➔ 青沙浦站 ➔ 青沙浦天空步道 ➔ 松亭站 ➔ 海東龍宮寺 ➔ 釜山 X the SKY ➔ 海雲台傳統市場',
                 stops: ['海雲台藍線公園尾浦站', '青沙浦站', '青沙浦天空步道', '松亭站', '海東龍宮寺', '釜山 X the SKY', '海雲台傳統市場'],
-                naverUrl: 'https://map.naver.com/p/directions/129.1706,35.1594,해운대블루라인파크%20미포정거장/129.1915,35.1614,해운대블루라인파크%20청사포정거장/129.2005,35.1786,송정역/129.2234,35.1883,해동용궁사/129.1694,35.1601,부산엑스더스카이/129.1618,35.1616,해운대전통시장/-/car',
+                naverUrl: 'https://naver.me/5nhg5g53',
             },
         },
         {
@@ -208,7 +208,7 @@ TravelAtlas.registerTrip({
                 icon: 'fa-cable-car',
                 desc: '松島海上纜車 ➔ 白淺灘文化村 ➔ 札嘎其水產市場 ➔ BIFF 廣場＆光復路 ➔ 富平罐頭市場',
                 stops: ['松島海上纜車', '白淺灘文化村', '札嘎其水產市場', 'BIFF廣場', '富平罐頭市場'],
-                naverUrl: 'https://map.naver.com/p/directions/129.0169,35.0772,송도해상케이블카/129.0470,35.0788,흰여울문화마을/129.0305,35.0967,자갈치시장/129.0270,35.0986,BIFF%20광장/129.0264,35.1017,부평깡통시장/-/car',
+                naverUrl: 'https://naver.me/FoXJpPyZ',
             },
         },
         {
